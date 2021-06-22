@@ -25,6 +25,7 @@ const config = {
     baseURL: 'http://localhost:3000',
     clientID: 'nRoiHn0wBQUbMvHjtYE1XkN0SQs4hQY3',
     issuerBaseURL: 'https://huelet-cc.us.auth0.com',
+    secret: process.env.AUTH0_SECRET
   };
 const limiter = new rateLimit({
     windowMs: 15 * 60 * 1000,
