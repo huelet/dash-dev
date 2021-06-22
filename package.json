@@ -1,0 +1,39 @@
+{
+  "name": "dash",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "start": "tsc && node --experimental-modules server.js"
+  },
+  "author": "Levi Richardson",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "@azure/storage-blob": "^12.5.0",
+    "@types/into-stream": "^3.1.1",
+    "@types/multer": "^1.4.5",
+    "@types/pug": "^2.0.4",
+    "axios": "^0.21.1",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-hcaptcha": "^0.0.3",
+    "express-openid-connect": "^2.4.0",
+    "express-rate-limit": "^5.2.6",
+    "formidable": "^1.2.2",
+    "multer": "^1.4.2",
+    "multer-azure": "^2.0.1",
+    "nodemailer": "^6.6.2",
+    "path": "^0.12.7",
+    "pug": "^3.0.2",
+    "simple-ssh": "^1.0.0",
+    "typescript": "^4.3.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.12",
+    "@types/express-rate-limit": "^5.1.1"
+  }
+}

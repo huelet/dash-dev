@@ -1,0 +1,30 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Hehey, your upload worked!
+        style(type="text/css").
+            @font-face {
+                font-family: "Segoe UI";
+                src: url('https://huelet.net/css/SEGOEUIL.TTF');
+                font-weight: lighter;
+            }
+            html, body {
+                font-family: "Segoe UI";
+                color: #FFFFFF;
+                background: rgb(24,23,24);
+                background: linear-gradient(90deg, rgba(24,23,24,1) 61%, rgba(12,41,70,1) 100%);
+            }
+            .thrl {
+                font-weight: lighter;
+                text-align: center;
+            }
+    body
+        h2.thrl 😄 Your upload worked!
+        h2.thrl Let's get the rest going
+        form(action="/api/ul/cf", method="get")
+            input#an(type="text", name="authortitle", hidden, disabled)
+    script.
+        document.getElementById('an')

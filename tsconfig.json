@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+      "module": "commonjs",
+      "noImplicitAny": true,
+      "removeComments": true,
+      "preserveConstEnums": true,
+      "sourceMap": false,
+      "esModuleInterop": true
+    },
+    "files": [
+      "server.ts",
+      "src/videoList.ts"
+    ]
+}

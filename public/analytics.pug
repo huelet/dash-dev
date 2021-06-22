@@ -1,0 +1,48 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Your video analytics - Huelet, the video platform for humans
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css")
+    style.
+        .plgo {
+            padding: 3px;
+            width: 24px;
+            height: 32px;
+        }
+    script(src="https://plausible.io/js/embed.host.js", async)
+    body
+    #__client
+        #__allc
+            .p-5.a.b
+                .p-5.a.b.c
+                    .p-5.b.c.d
+                        h2.display-4 Your video performance
+                    #a-main
+            .pl
+                p.text-center Powered By&nbsp;
+                    a(href="https://plausible.io?utm_source=huelet_dashboard", target="_blank", rel="noopener noreferrer") Plausible
+                        img.plgo(src="https://plausible.io/images/icon/plausible_logo_sm.png", alt="Plausible Analytics Logo")
+    script.
+            var request = new XMLHttpRequest();
+            request.open('GET', 'https://api.duckduckgo.com/?q=useragent&format=json', true)
+            request.onload = function () {
+            var data = JSON.parse(this.response)
+            var isBrave = data['Answer'].includes('Brave');
+            if(isBrave){
+                document.getElementById("__allc").remove();
+                document.getElementById("__client").innerHTML = "You are using Brave as your browser. However, Brave (perhaps unintentionally) blocks requests to our analytics API. Please switch to another browser. We suggest <a href=\"https://firefox.com\">Firefox</a>"
+            }
+        }
+            request.send()
+    script.
+      const height = window.screen.height;
+      const width = window.screen.width;
+      let mainApp = document.getElementById("__client");
+      let app = document.getElementById("__allc");
+      if (width < "1050") {
+          app.remove();
+          mainApp.innerHTML = "yowza! You're tiny! We don't support mobile devices yet. Please try from a larger display or PC."
+      }
