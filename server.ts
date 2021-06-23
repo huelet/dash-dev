@@ -108,9 +108,21 @@ app.get(`/api/videos/list/newest`, requiresAuth(), (_req: express.Request, res: 
   res.json({ "url": "https://huelet.net/w/pe3KhC40rENCtYcV/" });
 });
 // Flows
-app.get("/flow/dash/my", require('./src/flow/dash'));
-app.get("/flow/dash/my/settings", require('./src/flow/settings'));
-app.get("/flow/dash/my/videos", require('./src/flow/videos'));
+app.get("/flow/dash/my", requiresAuth(), (req: any, res: any) => {
+  const auth0id = req.oidc.user.sub;
+  const uid = auth0id.replace("auth0|", "");
+  res.redirect(`/studio/me`);
+});
+app.get("/flow/dash/my/settings", requiresAuth(), (req: any, res: any) => {
+  const auth0id = req.oidc.user.sub;
+  const uid = auth0id.replace("auth0|", "");
+  res.redirect(`/studio/me/settings`);
+});
+app.get("/flow/dash/my/videos", requiresAuth(), (req: any, res: any) => {
+  const auth0id = req.oidc.user.sub;
+  const uid = auth0id.replace("auth0|", "");
+  res.redirect(`/studio/videos`);
+});
 app.listen(port, () => {
   console.log(`Server listening on port ${port}, available at http://localhost:${port}`)
 });
