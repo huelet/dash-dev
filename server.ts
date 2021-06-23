@@ -28,9 +28,9 @@ const config = {
     secret: process.env.AUTH0_SECRET
   };
 const limiter = new rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 3
-})
+  windowMs: 15 * 60 * 1000,
+  max: 3
+});
 const containerName = "asset-" + uuidv1();
 export async function createContainer() {
   const blobServiceClient = BlobServiceClient.fromConnectionString(process.env.AZURE_STORAGE_CONNECTION_STRING);
@@ -39,7 +39,7 @@ export async function createContainer() {
   const containerClient = blobServiceClient.getContainerClient(containerName);
   const createContainerResponse = await containerClient.create();
   console.log("\n\t\t\tContainer was created successfully. requestId: ", createContainerResponse.requestId);
-}
+};
 const uploadSettings = multer({
   storage: multerAzure({
     connectionString: process.env.AZURE_STORAGE_CONNECTION_STRING,
@@ -47,12 +47,12 @@ const uploadSettings = multer({
     key: process.env.AZURE_STORAGE_KEY,
     container: containerName
   })
-})
+});
 app.use(auth(config));
 app.use(cors());
 app.set('trust proxy', 1);
-app.set('view engine', 'pug')
-app.set('views', path.resolve('public'))
+app.set('view engine', 'pug');
+app.set('views', path.resolve('public'));
 app.get('/', (req: express.Request, res: express.Response) => {
   // I can't think of any good variable names so screw it
   const isAuthd = req.oidc.isAuthenticated()
@@ -62,28 +62,28 @@ app.get('/', (req: express.Request, res: express.Response) => {
 });
 app.get('/ul', requiresAuth(), (_req: express.Request, res: express.Response) => {
   res.render('upload')
-})
+});
 app.get('/studio/uploadSuccess', requiresAuth(), (req: express.Request, res: express.Response) => {
   const videoUrl = req.query.cuurl;
   if (videoUrl === undefined) {
     res.json({ "error": "not all tokens were sent" })
   } else {
-  res.render('success', { authorName: req.oidc.user.nickname })
+    res.render('success', { authorName: req.oidc.user.nickname })
   }
-})
+});
 app.get('/studio/videos', requiresAuth(), (_req: express.Request, res: express.Response) => {
-  res.json({ "hi, wanted to tell you this":"yes, i'm gonna make you load forever. anyways. cya." })
-})
+  res.json({ "hi, wanted to tell you this": "yes, i'm gonna make you load forever. anyways. cya." })
+});
 // Profile and settings
-app.get('/studio/me', requiresAuth(), (req: express.Request, res: express.Response) => {
+app.get(`/studio/me`, requiresAuth(), (req: express.Request, res: express.Response) => {
   const auth0id = req.oidc.user.sub;
   const uid = auth0id.replace("auth0|", "")
   res.render('profile', { pfp: req.oidc.user.picture, uname: req.oidc.user.nickname, email: req.oidc.user.email, uid: uid })
-})
+});
 // Analytics (lord have mercy on my soul)
-app.get('/studio/analytics', requiresAuth(), (_req: express.Request, res: express.Response) => {
+app.get(`/studio/analytics`, requiresAuth(), (_req: express.Request, res: express.Response) => {
   res.render('analytics')
-})
+});
 // APIS GALORE
 app.get('/api/ul/cf', requiresAuth(), (req: express.Request, res: express.Response) => {
     const videoTitle = req.query.videotitle;
@@ -106,8 +106,11 @@ app.post('/api/ul/ul', requiresAuth(), uploadSettings.any(), (req, res, _next) =
 });
 app.get(`/api/videos/list/newest`, requiresAuth(), (_req: express.Request, res: express.Response) => {
   res.json({ "url": "https://huelet.net/w/pe3KhC40rENCtYcV/" });
-})
-
+});
+// Flows
+app.get("/flow/dash/my", require('./src/flow/dash'));
+app.get("/flow/dash/my/settings", require('./src/flow/settings'));
+app.get("/flow/dash/my/videos", require('./src/flow/videos'));
 app.listen(port, () => {
-    console.log(`Server listening on port ${port}, available at http://localhost:${port}`)
-})
+  console.log(`Server listening on port ${port}, available at http://localhost:${port}`)
+});
