@@ -1,4 +1,4 @@
-import express from "express";
+import express, { response } from "express";
 import * as dotenv from 'dotenv';
 dotenv.config();
 const app = express();
@@ -82,7 +82,10 @@ app.get(`/studio/me`, requiresAuth(), (req: express.Request, res: express.Respon
 });
 // Analytics (lord have mercy on my soul)
 app.get(`/studio/analytics`, requiresAuth(), (_req: express.Request, res: express.Response) => {
-  res.render('analytics')
+  fetch('/api/videos/list/newest')
+    .then(response => response.json())
+    .then(encodedUrl => encodeURIComponent(encodedUrl.url))
+  .then(urlEncoded => res.render('analytics', { analyticsUrl: urlEncoded }))
 });
 // APIS GALORE
 app.get('/api/ul/cf', requiresAuth(), (req: express.Request, res: express.Response) => {
