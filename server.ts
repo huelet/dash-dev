@@ -73,7 +73,7 @@ app.get('/studio/uploadSuccess', requiresAuth(), (req: express.Request, res: exp
 });
 app.get('/studio/videos', requiresAuth(), (_req: express.Request, res: express.Response) => {
   res.json({ "hi, wanted to tell you this": "yes, i'm gonna make you load forever. anyways. cya." })
-});
+}); 
 // Profile and settings
 app.get(`/studio/me`, requiresAuth(), (req: express.Request, res: express.Response) => {
   const auth0id = req.oidc.user.sub;
