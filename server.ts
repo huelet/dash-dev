@@ -50,7 +50,6 @@ const uploadSettings = multer({
   })
 });
 app.use(auth(config));
-app.use(limiter)
 app.use(cors());
 app.set('trust proxy', 1);
 app.set('view engine', 'pug');
