@@ -89,6 +89,9 @@ app.get(`/studio/analytics`, requiresAuth(), (_req: express.Request, res: expres
   .then(urlEncoded => res.render('analytics', { analyticsUrl: urlEncoded }))
 });
 // APIS GALORE
+app.get('/api/userdata', requiresAuth(), (req: express.Request, res: express.Response) => {
+  res.json(JSON.stringify(req.oidc.user))
+})
 app.get('/api/ul/cf', requiresAuth(), (req: express.Request, res: express.Response) => {
     const videoTitle = req.query.videotitle;
     const videoUrl = req.query.cuurl;
