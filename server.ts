@@ -112,7 +112,8 @@ app.get('/api/usersettings/pfp', requiresAuth(), (req: express.Request, res: exp
   const body = {
     "picture": `${pfpurl}`
   };
-  request.patch({ url: url, body: body });
+  const jsdBody = JSON.stringify(body)
+  request.patch({ url: url, body: jsdBody });
 })
 app.post('/api/ul/ul', requiresAuth(), uploadSettings.any(), (req, res, _next) => {
     res.status(200).redirect(`/studio/uploadSuccess?cuurl=undefined`)
