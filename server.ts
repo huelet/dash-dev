@@ -4,6 +4,7 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
 const rateLimit = require("express-rate-limit");
+const request = require('request');
 const { BlobServiceClient } = require('@azure/storage-blob');
 const multer = require('multer');
 const multerAzure = require('multer-azure');
@@ -73,7 +74,7 @@ app.get('/studio/uploadSuccess', requiresAuth(), (req: express.Request, res: exp
   }
 });
 app.get('/studio/videos', requiresAuth(), (_req: express.Request, res: express.Response) => {
-  res.json({ "hi, wanted to tell you this": "yes, i'm gonna make you load forever. anyways. cya." })
+  res.json({ "i'm still in development": "it's not ready yet" })
 });
 // Profile and settings
 app.get(`/studio/me`, requiresAuth(), (req: express.Request, res: express.Response) => {
@@ -105,6 +106,15 @@ app.get('/api/ul/cf', requiresAuth(), (req: express.Request, res: express.Respon
         }
     }).start();
 });
+app.get('/api/usersettings/pfp', requiresAuth(), (req: express.Request, res: express.Response) => {
+  const auth0id = req.oidc.user.sub;
+  const pfpurl = req.query.pfpurl;
+  const url = `https://login.auth0.com/api/v2/users/${auth0id}`;
+  const body = {
+    "picture": `${pfpurl}`
+  };
+  request.patch({ url: url, body: body });
+})
 app.post('/api/ul/ul', requiresAuth(), uploadSettings.any(), (req, res, _next) => {
     res.status(200).redirect(`/studio/uploadSuccess?cuurl=undefined`)
 });
