@@ -33,14 +33,6 @@ const limiter = new rateLimit({
   max: 3
 });
 const containerName = "asset-" + uuidv1();
-export async function createContainer() {
-  const blobServiceClient = BlobServiceClient.fromConnectionString(process.env.AZURE_STORAGE_CONNECTION_STRING);
-  console.log('\n\tContainer Creation requested...');
-  console.log('\n\t\t', containerName);
-  const containerClient = blobServiceClient.getContainerClient(containerName);
-  const createContainerResponse = await containerClient.create();
-  console.log("\n\t\t\tContainer was created successfully. requestId: ", createContainerResponse.requestId);
-};
 const uploadSettings = multer({
   storage: multerAzure({
     connectionString: process.env.AZURE_STORAGE_CONNECTION_STRING,
