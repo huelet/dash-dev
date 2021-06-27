@@ -91,11 +91,13 @@ app.get(`/studio/analytics`, requiresAuth(), (_req: express.Request, res: expres
 });
 // APIS GALORE
 app.get('/api/userdata', requiresAuth(), (req: express.Request, res: express.Response) => {
+  res.json(req.oidc.user)
+})
+app.get('/api/userdata/uid', requiresAuth(), (req: express.Request, res: express.Response) => {
   const auth0id = req.oidc.user.sub;
   const uid = auth0id.replace("auth0|", "")
   res.json({ uid: uid })
 })
-app.get('/api/userdata/uid', require('./src/userid'));
 app.get('/api/ul/cf', requiresAuth(), (req: express.Request, res: express.Response) => {
     const videoTitle = req.query.videotitle;
     const videoUrl = req.query.cuurl;
