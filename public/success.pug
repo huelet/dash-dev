@@ -27,6 +27,7 @@ html(lang="en")
         h2.thrl Let's get the rest going
         form(action=`/api/ul/cf`, method="get")
             input#an(type="text", name="authortitle")
+            input#vu(type="text", name="cuurl")
             p.thrl Video Title:
             input(type="text", name="videotitle")
             button.btn.btn-primary(type="submit") Deploy Video
@@ -39,4 +40,8 @@ html(lang="en")
             return vars;
         }
         const authorname = getUrlVars()["webauthor"];
+        const vurl = getUrlVars()["cuurl"];
         document.getElementById('an').value = authorname;
+        document.getElementById('an').style.display = "hidden";
+        document.getElementById('vu').value = vurl;
+        document.getElementById('vu').style.display = "hidden";
