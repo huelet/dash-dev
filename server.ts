@@ -102,8 +102,13 @@ app.get('/api/ul/cf', requiresAuth(), (req: express.Request, res: express.Respon
         res.json({ error: 'not all tokens have been sent' })
     }
     ssh.exec(`cd /var/h && node cf.js --author "${author}" --title "${videoTitle}" --url "${videoUrl}"`, {
-        out: function (stdout: any) {
-        res.json({ "pageUrl": stdout });
+      out: function (stdout: any) {
+        if (stdout.includes("\\n")) {
+          const strout = stdout.replace("\\n", "")
+          res.json({ "pageUrl": strout })
+        } else {
+          res.json({ "pageUrl": stdout });
+        }
         }
     }).start();
 });
