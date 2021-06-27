@@ -95,7 +95,7 @@ app.get('/api/ul/cf', requiresAuth(), (req: express.Request, res: express.Respon
   const videoTitle = req.query.videotitle;
   const videoUrlEncoded: any = req.query.cuurl;
   const author = req.query.authortitle;
-  const videoUrl = decodeURI(videoUrlEncoded);
+  const videoUrl = decodeURIComponent(videoUrlEncoded);
   console.log(videoUrl)
     const mailingAddress = req.oidc.user.email;
     if (videoTitle === undefined || author === undefined || videoUrlEncoded === undefined) {
