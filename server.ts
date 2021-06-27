@@ -49,6 +49,8 @@ const uploadSettings = multer({
     container: containerName
   })
 });
+const globalSasToken = "?sv=2020-02-10&ss=b&srt=sco&sp=r&se=3000-06-27T09:40:10Z&st=2021-06-27T01:40:10Z&sip=0.0.0.0-255.255.255.255&spr=https&sig=LDOCpb7z9CSWk2GkFNlalqVWOhdwmwn2pSBWbSBnVtM%3D";
+const urlSafeSasToken = encodeURIComponent(globalSasToken);
 app.use(auth(config));
 app.use(cors());
 app.set('trust proxy', 1);
@@ -113,8 +115,8 @@ app.get('/api/ul/cf', requiresAuth(), (req: express.Request, res: express.Respon
         }
     }).start();
 });
-app.post('/api/ul/ul', requiresAuth(), uploadSettings.any(), (req, res, _next) => {
-    console.log(uploadSettings.url[0]);
+app.post('/api/ul/ul', uploadSettings.any(), (req: any, res: express.Response, _next) => {
+  console.log(req.files.url)
     res.status(200).redirect(`/studio/uploadSuccess?cuurl=undefined`)
 });
 app.get(`/api/videos/list/newest`, requiresAuth(), (_req: express.Request, res: express.Response) => {
