@@ -54,7 +54,6 @@ app.use(cors());
 app.set('trust proxy', 1);
 app.set('view engine', 'pug');
 app.set('views', path.resolve('public'));
-app.use((req:express.Request,res:express.Response)=>{ return res.status(500).render('errors/fivehundred')});
 app.get('/', (req: express.Request, res: express.Response) => {
   // I can't think of any good variable names so screw it
   const isAuthd = req.oidc.isAuthenticated()
