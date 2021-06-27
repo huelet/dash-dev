@@ -108,16 +108,6 @@ app.get('/api/ul/cf', requiresAuth(), (req: express.Request, res: express.Respon
         }
     }).start();
 });
-app.get('/api/usersettings/pfp', requiresAuth(), (req: express.Request, res: express.Response) => {
-  const auth0id = req.oidc.user.sub;
-  const pfpurl = req.query.pfpurl;
-  const url = `https://login.auth0.com/api/v2/users/${auth0id}`;
-  const body = {
-    "picture": `${pfpurl}`
-  };
-  const jsdBody = JSON.stringify(body)
-  request.patch({ url: url, body: jsdBody });
-})
 app.post('/api/ul/ul', requiresAuth(), uploadSettings.any(), (req, res, _next) => {
     res.status(200).redirect(`/studio/uploadSuccess?cuurl=undefined`)
 });
