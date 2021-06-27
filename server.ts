@@ -93,10 +93,11 @@ app.get('/api/userdata/uid', requiresAuth(), (req: express.Request, res: express
 })
 app.get('/api/ul/cf', requiresAuth(), (req: express.Request, res: express.Response) => {
     const videoTitle = req.query.videotitle;
-    const videoUrl = req.query.cuurl;
+    const videoUrlEncoded: any = req.query.cuurl;
     const author = req.query.authortitle;
-  const mailingAddress = req.oidc.user.email;
-    if (videoTitle === undefined || author === undefined || videoUrl === undefined) {
+    const videoUrl = decodeURI(videoUrlEncoded)
+    const mailingAddress = req.oidc.user.email;
+    if (videoTitle === undefined || author === undefined || videoUrlEncoded === undefined) {
         res.json({ error: 'not all tokens have been sent' })
     }
     ssh.exec(`cd /var/h && node cf.js --author "${author}" --title "${videoTitle}" --url "${videoUrl}"`, {
