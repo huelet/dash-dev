@@ -26,10 +26,10 @@ html(lang="en")
         h2.thrl 😄 Your upload worked!
         h2.thrl Let's get the rest going
         form(action="/api/ul/cf", method="get")
-            input#an(type="text", name="authortitle", hidden, disabled)
+            input#an(type="text", name="authortitle", disabled)
             p.thrl Video Title:
             input(type="text", name="videotitle")
-            button(type="submit") Deploy Video
+            button.btn.btn-primary(type="submit") Deploy Video
     script.
         function getUrlVars() {
             var vars = {};
