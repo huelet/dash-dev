@@ -108,8 +108,7 @@ app.get('/api/ul/cf', requiresAuth(), (req: express.Request, res: express.Respon
     }).start();
 });
 app.post('/api/ul/ul', requiresAuth(), uploadSettings.any(), (req: any, res: express.Response, _next) => {
-  const vurl = req.files.url;
-  const safeUrl = encodeURI(vurl);
+  const safeUrl = encodeURI(req.files.url);
   const fullUrl = safeUrl + urlSafeSasToken;
     res.status(200).redirect(`/studio/uploadSuccess?cuurl=${fullUrl}`)
 });
