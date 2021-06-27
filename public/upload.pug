@@ -26,21 +26,5 @@ html(lang="en")
             .file-upload
                 .file-select
                     #fileName.file-select-button Choose File
-                    #noFile.file-select-name No file chosen...
                     input#chooseFile(type='file', name='chooseFile', required, accept="video/*")
                 button.btn.hb.btat(type="submit") Upload
-    script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js")
-    script(src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.0/gsap.min.js")
-    script.
-        $('#chooseFile').bind('change', function () {
-            var filename = $("#chooseFile").val();
-            if (/^\s*$/.test(filename)) {
-            $(".file-upload").removeClass('active');
-            $("#noFile").text("No file chosen...");
-        }
-        else {
-            $(".file-upload").addClass('active');
-        }
-        });
-    script.
-        const $=(t,e=document)=>e.querySelector(t),$$=(t,e=document)=>e.querySelectorAll(t);let duration=3e3;function getPoint(t,e,n,o){let a=(t,e,n,a)=>{let i=e||t,r=n||t,u=Math.sqrt(Math.pow(r[0]-i[0],2)+Math.pow(r[1]-i[1],2)),l=Math.atan2(r[1]-i[1],r[0]-i[0])+(a?Math.PI:0),s=u*o;return[t[0]+Math.cos(l)*s,t[1]+Math.sin(l)*s]},i=a(n[e-1],n[e-2],t,!1),r=a(t,n[e-1],n[e+1],!0);return`C ${i[0]},${i[1]} ${r[0]},${r[1]} ${t[0]},${t[1]}`}function getPath(t,e,n){return`<path d="${(n||[[5,12],[12,t],[19,12]]).reduce((t,n,o,a)=>0===o?`M ${n[0]},${n[1]}`:`${t} ${getPoint(n,o,a,e)}`,"")}" />`}$$(".button").forEach(t=>{let e=$("svg",t),n=new Proxy({y:null,smoothing:null},{set:(t,n,o)=>(t[n]=o,null!==t.y&&null!==t.smoothing&&(e.innerHTML=getPath(t.y,t.smoothing,null)),!0),get:(t,e)=>t[e]});t.style.setProperty("--duration",duration),n.y=4,n.smoothing=0,t.addEventListener("click",o=>{t.classList.contains("loading")||(t.classList.add("loading"),gsap.to(n,{smoothing:.3,duration:.065*duration/1e3}),gsap.to(n,{y:12,ease:Elastic.easeOut.config(1.12,.4),duration:.265*duration/1e3,delay:.065*duration/1e3}),setTimeout(()=>{e.innerHTML=getPath(0,0,[[3,14],[8,19],[21,6]])},duration/2)),o.preventDefault()})});
