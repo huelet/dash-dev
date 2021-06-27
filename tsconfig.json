@@ -11,6 +11,7 @@
       "server.ts",
       "src/flow/dash.ts",
       "src/flow/settings.ts",
-      "src/flow/videos.ts"
+      "src/flow/videos.ts",
+      "src/userid.ts"
     ]
 }

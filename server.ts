@@ -54,6 +54,7 @@ app.use(cors());
 app.set('trust proxy', 1);
 app.set('view engine', 'pug');
 app.set('views', path.resolve('public'));
+app.use((req:express.Request,res:express.Response)=>{ return res.status(500).render('errors/fivehundred')});
 app.get('/', (req: express.Request, res: express.Response) => {
   // I can't think of any good variable names so screw it
   const isAuthd = req.oidc.isAuthenticated()
@@ -92,6 +93,7 @@ app.get(`/studio/analytics`, requiresAuth(), (_req: express.Request, res: expres
 app.get('/api/userdata', requiresAuth(), (req: express.Request, res: express.Response) => {
   res.json(req.oidc.user)
 })
+app.get('/api/userdata/uid', require('./src/userid'));
 app.get('/api/ul/cf', requiresAuth(), (req: express.Request, res: express.Response) => {
     const videoTitle = req.query.videotitle;
     const videoUrl = req.query.cuurl;
