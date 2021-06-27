@@ -7,7 +7,7 @@ const rateLimit = require("express-rate-limit");
 const request = require('request');
 const { BlobServiceClient } = require('@azure/storage-blob');
 const multer = require('multer');
-const multerAzure = require('multer-azure');
+const multerAzure = require('mazure');
 const { v1: uuidv1 } = require('uuid');
 const cors = require('cors');
 const SSH = require('simple-ssh');
@@ -115,9 +115,11 @@ app.get('/api/ul/cf', requiresAuth(), (req: express.Request, res: express.Respon
         }
     }).start();
 });
-app.post('/api/ul/ul', uploadSettings.any(), (req: any, res: express.Response, _next) => {
-  console.log(req.files.url)
-    res.status(200).redirect(`/studio/uploadSuccess?cuurl=undefined`)
+app.post('/api/ul/ul', requiresAuth(), uploadSettings.any(), (req: any, res: express.Response, _next) => {
+  const vurl = req.files.url;
+  const safeUrl = encodeURI(vurl);
+  const fullUrl = safeUrl + urlSafeSasToken;
+    res.status(200).redirect(`/studio/uploadSuccess?cuurl=${fullUrl}`)
 });
 app.get(`/api/videos/list/newest`, requiresAuth(), (_req: express.Request, res: express.Response) => {
   res.json({ "url": "https://huelet.net/w/pe3KhC40rENCtYcV/" });
