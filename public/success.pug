@@ -27,5 +27,16 @@ html(lang="en")
         h2.thrl Let's get the rest going
         form(action="/api/ul/cf", method="get")
             input#an(type="text", name="authortitle", hidden, disabled)
+            p.thrl Video Title:
+            input(type="text", name="videotitle")
+
     script.
-        document.getElementById('an')
+        function getUrlVars() {
+            var vars = {};
+            var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+                vars[key] = value;
+            });
+            return vars;
+        }
+        const authorname = getUrlVars()["webauthor"];
+        document.getElementById('an').value = authorname;
