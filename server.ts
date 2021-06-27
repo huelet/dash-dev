@@ -103,12 +103,8 @@ app.get('/api/ul/cf', requiresAuth(), (req: express.Request, res: express.Respon
     }
     ssh.exec(`cd /var/h && node cf.js --author "${author}" --title "${videoTitle}" --url "${videoUrl}"`, {
       out: function (stdout: any) {
-        if (stdout.includes("\\n")) {
           const strout = stdout.replace("\\n", "")
           res.json({ "pageUrl": strout })
-        } else {
-          res.json({ "pageUrl": stdout });
-        }
         }
     }).start();
 });
