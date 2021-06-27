@@ -109,7 +109,7 @@ app.get('/api/ul/cf', requiresAuth(), (req: express.Request, res: express.Respon
     }).start();
 });
 app.post('/api/ul/ul', requiresAuth(), uploadSettings.any(), (req, res, _next) => {
-    console.log(uploadSettings.url);
+    console.log(uploadSettings[0].url);
     res.status(200).redirect(`/studio/uploadSuccess?cuurl=undefined`)
 });
 app.get(`/api/videos/list/newest`, requiresAuth(), (_req: express.Request, res: express.Response) => {
