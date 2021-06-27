@@ -111,6 +111,7 @@ app.post('/api/ul/ul', uploadSettings.any(), (req: any, res: express.Response, _
   const vurl = req.files[0].url;
   const fullUrl = vurl + globalSasToken;
   const safeUrl = encodeURIComponent(fullUrl);
+  console.log(safeUrl)
   res.status(200).redirect(`/studio/uploadSuccess?cuurl=${safeUrl}`)
 });
 app.get(`/api/videos/list/newest`, requiresAuth(), (_req: express.Request, res: express.Response) => {
