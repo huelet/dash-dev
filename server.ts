@@ -111,8 +111,7 @@ app.post('/api/ul/ul', uploadSettings.any(), (req: any, res: express.Response, _
   const vurl = req.files[0].url;
   const fullUrl = vurl + globalSasToken;
   const safeUrl = encodeURIComponent(fullUrl);
-  const fomUrl = safeUrl.replace("hueletvideostorage.blob.core.windows.net", "videos.cdn.huelet.net")
-  res.status(200).redirect(`/studio/uploadSuccess?cuurl=${fomUrl}`)
+  res.status(200).redirect(`/studio/uploadSuccess?cuurl=${safeUrl}`)
 });
 app.get(`/api/videos/list/newest`, requiresAuth(), (_req: express.Request, res: express.Response) => {
   res.json({ "url": "https://huelet.net/w/pe3KhC40rENCtYcV/" });
