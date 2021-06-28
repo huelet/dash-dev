@@ -122,7 +122,7 @@ app.get('/api/profiledata/nickname', requiresAuth(), (req: express.Request, res:
   const requestedNickname = req.query.nick
   const options = {
     method: 'PATCH',
-    url: 'https://huelet-cc.us.auth0.com/api/v2/users/user_id',
+    url: `https://huelet-cc.us.auth0.com/api/v2/users/${req.oidc.user.sub}`,
     headers: {authorization: `Bearer ${process.env.AUTH0_BEARER}`, 'content-type': 'application/json'},
     data: {nickname: requestedNickname}
   };
