@@ -117,7 +117,7 @@ app.post('/api/ul/ul', requiresAuth(), uploadSettings.any(), (req: any, res: exp
 app.get(`/api/videos/list/newest`, requiresAuth(), (_req: express.Request, res: express.Response) => {
   res.json({ "url": "https://huelet.net/w/pe3KhC40rENCtYcV/" });
 });
-app.post('/api/profiledata/nickname', requiresAuth(), (req: express.Request, res: express.Response) => {
+app.get('/api/profiledata/nickname', requiresAuth(), (req: express.Request, res: express.Response) => {
   var options = { method: 'POST',
   url: 'https://huelet-cc.us.auth0.com/oauth/token',
   headers: { 'content-type': 'application/json' },
