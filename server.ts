@@ -125,8 +125,7 @@ app.get('/api/profiledata/nickname', requiresAuth(), (req: express.Request, res:
 
 request(options, function (error: string, response: any, body: any) {
   if (error) throw new Error(error);
-
-  console.log(body);
+  console.log(body.access_token)
 });
 })
 // Flows
