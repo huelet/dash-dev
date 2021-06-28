@@ -128,7 +128,7 @@ app.get('/api/profiledata/nickname', requiresAuth(), (req: express.Request, res:
   };
   
   axios.request(options).then(function (response: { data: any; }) {
-    console.log(response.data);
+    res.redirect('/studio/profile?uname=success')
   }).catch(function (error: any) {
     console.error(error);
   });
