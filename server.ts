@@ -10,6 +10,7 @@ const multer = require('multer');
 const multerAzure = require('mazure');
 const { v1: uuidv1 } = require('uuid');
 const cors = require('cors');
+const axios = require("axios").default;
 const SSH = require('simple-ssh');
 import pug from 'pug';
 import path from 'path';
@@ -118,15 +119,19 @@ app.get(`/api/videos/list/newest`, requiresAuth(), (_req: express.Request, res: 
   res.json({ "url": "https://huelet.net/w/pe3KhC40rENCtYcV/" });
 });
 app.get('/api/profiledata/nickname', requiresAuth(), (req: express.Request, res: express.Response) => {
-  var options = { method: 'POST',
-  url: 'https://huelet-cc.us.auth0.com/oauth/token',
-  headers: { 'content-type': 'application/json' },
-  body: '{"client_id":"mdSjmpL4COkVNxju2LcmR5tExF6vmGT9","client_secret":"2SdVZ5wYZOisb4Bck-tYmjCm0hkX5NacATqVsv1xNM8K9XzKP5Vs8b2pfqkx7WBU","audience":"https://huelet-cc.us.auth0.com/api/v2/","grant_type":"client_credentials"}' };
-
-request(options, function (error: string, response: any, body: any) {
-  if (error) throw new Error(error);
-  console.log(body.access_token)
-});
+  const requestedNickname = req.query.nick
+  const options = {
+    method: 'PATCH',
+    url: 'https://huelet-cc.us.auth0.com/api/v2/users/user_id',
+    headers: {authorization: `Bearer ${process.env.AUTH0_BEARER}`, 'content-type': 'application/json'},
+    data: {nickname: requestedNickname}
+  };
+  
+  axios.request(options).then(function (response: { data: any; }) {
+    console.log(response.data);
+  }).catch(function (error: any) {
+    console.error(error);
+  });
 })
 // Flows
 app.get("/flow/dash/my", requiresAuth(), (req: any, res: any) => {
