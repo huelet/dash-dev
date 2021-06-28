@@ -13,7 +13,6 @@ const cors = require('cors');
 const SSH = require('simple-ssh');
 import pug from 'pug';
 import path from 'path';
-const axios = require('axios');
 import { auth, requiresAuth } from 'express-openid-connect';
 const ssh = new SSH({
     host: process.env.HOSTURL,
@@ -118,6 +117,18 @@ app.post('/api/ul/ul', requiresAuth(), uploadSettings.any(), (req: any, res: exp
 app.get(`/api/videos/list/newest`, requiresAuth(), (_req: express.Request, res: express.Response) => {
   res.json({ "url": "https://huelet.net/w/pe3KhC40rENCtYcV/" });
 });
+app.post('/api/profiledata/nickname', requiresAuth(), (req: express.Request, res: express.Response) => {
+  var options = { method: 'POST',
+  url: 'https://huelet-cc.us.auth0.com/oauth/token',
+  headers: { 'content-type': 'application/json' },
+  body: '{"client_id":"mdSjmpL4COkVNxju2LcmR5tExF6vmGT9","client_secret":"2SdVZ5wYZOisb4Bck-tYmjCm0hkX5NacATqVsv1xNM8K9XzKP5Vs8b2pfqkx7WBU","audience":"https://huelet-cc.us.auth0.com/api/v2/","grant_type":"client_credentials"}' };
+
+request(options, function (error: string, response: any, body: any) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
+})
 // Flows
 app.get("/flow/dash/my", requiresAuth(), (req: any, res: any) => {
   const auth0id = req.oidc.user.sub;
