@@ -23,8 +23,8 @@ const ssh = new SSH({
 const config = {
     authRequired: false,
     auth0Logout: true,
-    baseURL: 'https://huelet-dash-prod1.herokuapp.com/',
-    clientID: 'nRoiHn0wBQUbMvHjtYE1XkN0SQs4hQY3',
+    baseURL: 'https://huelet-dash-dev.herokuapp.com/',
+    clientID: 'WZEqB5TB7eCsBjApsyJglUKNvqYxQkQG',
     issuerBaseURL: 'https://huelet-cc.us.auth0.com',
     secret: process.env.AUTH0_SECRET
   };
