@@ -41,6 +41,14 @@ const uploadSettings = multer({
     container: containerName
   })
 });
+const profileUploadSettings = multer({
+  storage: multerAzure({
+    connectionString: process.env.AZURE_STORAGE_CONNECTION_STRING,
+    account: process.env.AZURE_STORAGE_ACCOUNT_NAME,
+    key: process.env.AZURE_STORAGE_KEY,
+    container: containerName
+  })
+});
 const globalSasToken = "?sv=2020-02-10&ss=b&srt=sco&sp=r&se=3000-06-27T09:40:10Z&st=2021-06-27T01:40:10Z&sip=0.0.0.0-255.255.255.255&spr=https&sig=LDOCpb7z9CSWk2GkFNlalqVWOhdwmwn2pSBWbSBnVtM%3D";
 const urlSafeSasToken = encodeURIComponent(globalSasToken);
 app.use(auth(config));
@@ -132,8 +140,20 @@ app.get('/api/profiledata/nickname', requiresAuth(), (req: express.Request, res:
     console.error(error);
   });
 })
-app.post('/api/profiledata/pfp/upload', requiresAuth(), (req: express.Request, res: express.Response) => {
-  
+app.post('/api/profiledata/pfp/upload', uploadSettings.any(), requiresAuth(), (req: any, res: express.Response) => {
+  const iurl = req.files[0].url;
+  const options = {
+    method: 'PATCH',
+    url: `https://huelet-cc.us.auth0.com/api/v2/users/${req.oidc.user.sub}`,
+    headers: {authorization: `Bearer ${process.env.AUTH0_BEARER}`, 'content-type': 'application/json'},
+    data: {picture: iurl}
+  };
+  axios.request(options).then(function (response: { data: any; }) {
+    res.redirect('/studio/me?pfp=success')
+  }).catch(function (error: any) {
+    res.redirect('/studio/me?pfp=failure')
+    console.error(error);
+  });
 })
 // Flows
 app.get("/flow/dash/my", requiresAuth(), (req: any, res: any) => {
