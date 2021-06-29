@@ -126,12 +126,14 @@ app.get('/api/profiledata/nickname', requiresAuth(), (req: express.Request, res:
     headers: {authorization: `Bearer ${process.env.AUTH0_BEARER}`, 'content-type': 'application/json'},
     data: {nickname: requestedNickname, name: requestedNickname}
   };
-
   axios.request(options).then(function (response: { data: any; }) {
     res.redirect('/studio/me?uname=success')
   }).catch(function (error: any) {
     console.error(error);
   });
+})
+app.post('/api/profiledata/pfp/upload', requiresAuth(), (req: express.Request, res: express.Response) => {
+  
 })
 // Flows
 app.get("/flow/dash/my", requiresAuth(), (req: any, res: any) => {

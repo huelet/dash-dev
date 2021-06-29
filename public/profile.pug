@@ -75,6 +75,11 @@ html(lang="en")
                       form(action="/api/profiledata/nickname", method="get")
                         input#nick.form-control(type="text", name="nick", required)
                         button.btn.btn-primary(type="submit") Deploy Changes
+                  .col-sm.border.border-secondary.rounded
+                    #pfpChange
+                      h2.display-6 Change your Profile Picture
+                      form(action="https://file.coffee/api/file/upload?api=016816f9-2e38-4ebc-9009-8d457ab572e2", method="post")
+                        input#profilepic(type="file", name="profile")
     script.
         const nameChange = document.getElementById("nickChange");
         function getUrlVars() {
