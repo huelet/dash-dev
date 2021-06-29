@@ -124,9 +124,9 @@ app.get('/api/profiledata/nickname', requiresAuth(), (req: express.Request, res:
     method: 'PATCH',
     url: `https://huelet-cc.us.auth0.com/api/v2/users/${req.oidc.user.sub}`,
     headers: {authorization: `Bearer ${process.env.AUTH0_BEARER}`, 'content-type': 'application/json'},
-    data: {nickname: requestedNickname}
+    data: {nickname: requestedNickname, name: requestedNickname}
   };
-  
+
   axios.request(options).then(function (response: { data: any; }) {
     res.redirect('/studio/me?uname=success')
   }).catch(function (error: any) {
