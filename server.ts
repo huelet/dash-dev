@@ -142,11 +142,12 @@ app.get('/api/profiledata/nickname', requiresAuth(), (req: express.Request, res:
 })
 app.post('/api/profiledata/pfp/upload', uploadSettings.any(), requiresAuth(), (req: any, res: express.Response) => {
   const iurl = req.files[0].url;
+  const fullUrl = iurl + globalSasToken;
   const options = {
     method: 'PATCH',
     url: `https://huelet-cc.us.auth0.com/api/v2/users/${req.oidc.user.sub}`,
     headers: {authorization: `Bearer ${process.env.AUTH0_BEARER}`, 'content-type': 'application/json'},
-    data: {picture: iurl}
+    data: {picture: fullUrl}
   };
   axios.request(options).then(function (response: { data: any; }) {
     res.redirect('/studio/me?pfp=success')
