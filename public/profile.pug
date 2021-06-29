@@ -86,9 +86,9 @@ html(lang="en")
         }
         const unamedata = getUrlVars()["uname"];
         if (unamedata === "failure") {
-          nameChange.innerHTML = `<div class="alert alert-danger" role="alert"><h4 class="alert-heading">yowza! your file upload didn't work.</h4><p>Unfortunately, you weren't able to change your username. Please report this bug in the #bugs section of our discord server.</p></div>`;
+          nameChange.innerHTML = `<div class="alert alert-danger" role="alert"><h4 class="alert-heading">yowza! your username change didn't work.</h4><p>Unfortunately, you weren't able to change your username. Please report this bug in the #bugs section of our discord server.</p></div>`;
         } if (unamedata === "success") {
-          nameChange.innerHTML = `<div class="alert alert-success" role="alert"><h4 class="alert-heading">Awesome! Your upload worked!</h4><p>Aww yeah, your username was successfully changed!</p></div>`;
+          nameChange.innerHTML = `<div class="alert alert-success" role="alert"><h4 class="alert-heading">Awesome! Your username change worked!</h4><p>Aww yeah, your username was successfully changed!</p></div>`;
         }
     script.
       const height = window.screen.height;
