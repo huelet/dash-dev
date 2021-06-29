@@ -88,7 +88,7 @@ html(lang="en")
         if (unamedata === "failure") {
           nameChange.remove();
           nameChange.innerHTML = `<div class="alert alert-danger" role="alert"><h4 class="alert-heading">yowza! your file upload didn't work.</h4><p>Unfortunately, you weren't able to change your username. Please report this bug in the #bugs section of our discord server.</p></div>`;
-        } if (uname === "success") {
+        } if (unamedata === "success") {
           nameChange.remove();
           nameChange.innerHTML = `<div class="alert alert-success" role="alert"><h4 class="alert-heading">Awesome! Your upload worked!</h4><p>Aww yeah, your username was successfully changed!</p></div>`;
         }
