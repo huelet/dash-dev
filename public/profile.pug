@@ -69,11 +69,29 @@ html(lang="en")
                       h2.p-4 Settings
               .container
                 .row
-                  .col-sm.border.border-secondary.rounded-lg
-                    h2.display-6 Change your username
+                  .col-sm.border.border-secondary.rounded
+                    #nickChange
+                      h2.display-6 Change your username
                       form(action="/api/profiledata/nickname", method="get")
-                        input#nick(type="text", name="nick", required)
+                        input#nick.form-control(type="text", name="nick", required)
                         button.btn.btn-primary(type="submit") Deploy Changes
+    script.
+        const nameChange = document.getElementById("nickChange");
+        function getUrlVars() {
+            var vars = {};
+            var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+                vars[key] = value;
+            });
+            return vars;
+        }
+        const unamedata = getUrlVars()["uname"];
+        if (unamedata === "failure") {
+          nameChange.remove();
+          nameChange.innerHTML = `<div class="alert alert-danger" role="alert"><h4 class="alert-heading">yowza! your file upload didn't work.</h4><p>Unfortunately, you weren't able to change your username. Please report this bug in the #bugs section of our discord server.</p></div>`;
+        } if (uname === "success") {
+          nameChange.remove();
+          nameChange.innerHTML = `<div class="alert alert-success" role="alert"><h4 class="alert-heading">Awesome! Your upload worked!</h4><p>Aww yeah, your username was successfully changed!</p></div>`;
+        }
     script.
       const height = window.screen.height;
       const width = window.screen.width;
