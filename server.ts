@@ -12,6 +12,7 @@ const { v1: uuidv1 } = require('uuid');
 const cors = require('cors');
 const axios = require("axios").default;
 const SSH = require('simple-ssh');
+const { useID } = require('@dothq/id');
 import pug from 'pug';
 import path from 'path';
 import { auth, requiresAuth } from 'express-openid-connect';
@@ -121,7 +122,7 @@ app.post('/api/ul/ul', requiresAuth(), uploadSettings.any(), (req: any, res: exp
   const fullUrl = vurl + globalSasToken;
   const safeUrl = encodeURIComponent(fullUrl);
   console.log(safeUrl)
-  res.status(200).redirect(`/studio/uploadSuccess?cuurl=${safeUrl}&webauthor=${req.oidc.user.nickname}`)
+  res.status(200).redirect(`/studio/uploadSuccess?cuurl=${safeUrl}&webauthor=${req.oidc.user.nickname}&token=${useID()}`)
 });
 app.get(`/api/videos/list/newest`, requiresAuth(), (_req: express.Request, res: express.Response) => {
   res.json({ "url": "https://huelet.net/w/pe3KhC40rENCtYcV/" });
@@ -135,7 +136,7 @@ app.get('/api/profiledata/nickname', requiresAuth(), (req: express.Request, res:
     data: {nickname: requestedNickname, name: requestedNickname}
   };
   axios.request(options).then(function (response: { data: any; }) {
-    res.redirect('/studio/me?uname=success')
+    res.redirect(`/studio/me?uname=success&token=${useID()}`)
   }).catch(function (error: any) {
     console.error(error);
   });
@@ -150,9 +151,9 @@ app.post('/api/profiledata/pfp/upload', uploadSettings.any(), requiresAuth(), (r
     data: {picture: fullUrl}
   };
   axios.request(options).then(function (response: { data: any; }) {
-    res.redirect('/studio/me?pfp=success')
+    res.redirect(`/studio/me?pfp=success&token=${useID()}`)
   }).catch(function (error: any) {
-    res.redirect('/studio/me?pfp=failure')
+    res.redirect(`/studio/me?pfp=failure&token=${useID()}`)
     console.error(error);
   });
 })
