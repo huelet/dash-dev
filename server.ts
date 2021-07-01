@@ -35,6 +35,7 @@ const limiter = new rateLimit({
   max: 3
 });
 const containerName = "asset-" + uuidv1();
+const profileContainerName = "profile-" + uuidv1();
 const uploadSettings = multer({
   storage: multerAzure({
     connectionString: process.env.AZURE_STORAGE_CONNECTION_STRING,
@@ -48,7 +49,7 @@ const profileUploadSettings = multer({
     connectionString: process.env.AZURE_STORAGE_CONNECTION_STRING,
     account: process.env.AZURE_STORAGE_ACCOUNT_NAME,
     key: process.env.AZURE_STORAGE_KEY,
-    container: containerName
+    container: profileContainerName
   })
 });
 const globalSasToken = "?sv=2020-02-10&ss=b&srt=sco&sp=r&se=3000-06-27T09:40:10Z&st=2021-06-27T01:40:10Z&sip=0.0.0.0-255.255.255.255&spr=https&sig=LDOCpb7z9CSWk2GkFNlalqVWOhdwmwn2pSBWbSBnVtM%3D";
