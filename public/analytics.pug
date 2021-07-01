@@ -39,12 +39,3 @@ html(lang="en")
             }
         }
             request.send()
-    script.
-      const height = window.screen.height;
-      const width = window.screen.width;
-      let mainApp = document.getElementById("__client");
-      let app = document.getElementById("__allc");
-      if (width < "1050") {
-          app.remove();
-          mainApp.innerHTML = "yowza! You're tiny! We don't support mobile devices yet. Please try from a larger display or PC."
-      }

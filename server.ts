@@ -12,6 +12,7 @@ const { v1: uuidv1 } = require('uuid');
 const cors = require('cors');
 const axios = require("axios").default;
 const SSH = require('simple-ssh');
+const versionData = require('./verdata.json')
 const { useID } = require('@dothq/id');
 import pug from 'pug';
 import path from 'path';
@@ -91,6 +92,13 @@ app.get(`/studio/analytics`, requiresAuth(), (_req: express.Request, res: expres
     .then(encodedUrl => encodeURIComponent(encodedUrl.url))
   .then(urlEncoded => res.render('analytics', { analyticsUrl: urlEncoded }))
 });
+
+app.get('/studio/profile', requiresAuth(), (req: express.Request, res: express.Response) => {
+
+})
+app.get('/studio/profile/create', requiresAuth(), (req: express.Request, res: express.Response) => {
+
+})
 // APIS GALORE
 app.get('/api/userdata', requiresAuth(), (req: express.Request, res: express.Response) => {
   res.json(req.oidc.user)
