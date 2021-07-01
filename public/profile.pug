@@ -81,6 +81,8 @@ html(lang="en")
                       form(action="/api/profiledata/pfp/upload", method="post", enctype="multipart/form-data")
                         input#profilepic(type="file", name="file")
                         button.btn.btn-primary(type="submit") Deploy Changes
+      .version
+        p=appversion
     script.
         const nameChange = document.getElementById("nickChange");
         function getUrlVars() {

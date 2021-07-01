@@ -54,6 +54,7 @@ const profileUploadSettings = multer({
 });
 const globalSasToken = "?sv=2020-02-10&ss=b&srt=sco&sp=r&se=3000-06-27T09:40:10Z&st=2021-06-27T01:40:10Z&sip=0.0.0.0-255.255.255.255&spr=https&sig=LDOCpb7z9CSWk2GkFNlalqVWOhdwmwn2pSBWbSBnVtM%3D";
 const urlSafeSasToken = encodeURIComponent(globalSasToken);
+const appVersion = `Huelet Dashboard running beta, v${versionData.version}`;
 app.use(auth(config));
 app.use(cors());
 app.set('trust proxy', 1);
@@ -67,14 +68,14 @@ app.get('/', (req: express.Request, res: express.Response) => {
   })
 });
 app.get('/ul', requiresAuth(), (_req: express.Request, res: express.Response) => {
-  res.render('upload')
+  res.render('upload', { versionData: appVersion })
 });
 app.get('/studio/uploadSuccess', requiresAuth(), (req: express.Request, res: express.Response) => {
   const videoUrl = req.query.cuurl;
   if (videoUrl === undefined) {
     res.json({ "error": "not all tokens were sent" })
   } else {
-    res.render('success', { authorName: req.oidc.user.nickname })
+    res.render('success', { authorName: req.oidc.user.nickname, versionData: appVersion })
   }
 });
 app.get('/studio/videos', requiresAuth(), (_req: express.Request, res: express.Response) => {
@@ -84,14 +85,14 @@ app.get('/studio/videos', requiresAuth(), (_req: express.Request, res: express.R
 app.get(`/studio/me`, requiresAuth(), (req: express.Request, res: express.Response) => {
   const auth0id = req.oidc.user.sub;
   const uid = auth0id.replace("auth0|", "")
-  res.render('profile', { pfp: req.oidc.user.picture, uname: req.oidc.user.nickname, email: req.oidc.user.email, uid: uid })
+  res.render('profile', { pfp: req.oidc.user.picture, uname: req.oidc.user.nickname, email: req.oidc.user.email, uid: uid, versionData: appVersion })
 });
 // Analytics (lord have mercy on my soul)
 app.get(`/studio/analytics`, requiresAuth(), (_req: express.Request, res: express.Response) => {
   fetch('/api/videos/list/newest')
     .then(response => response.json())
     .then(encodedUrl => encodeURIComponent(encodedUrl.url))
-  .then(urlEncoded => res.render('analytics', { analyticsUrl: urlEncoded }))
+  .then(urlEncoded => res.render('analytics', { analyticsUrl: urlEncoded, versionData: appVersion }))
 });
 
 app.get('/studio/profile', requiresAuth(), (req: express.Request, res: express.Response) => {
