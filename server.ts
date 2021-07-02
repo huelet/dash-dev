@@ -55,6 +55,8 @@ const urlSafeSasToken = encodeURIComponent(globalSasToken);
 const appVersion = `Huelet Dashboard running beta, v${versionData.version}`;
 app.use(auth(config));
 app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.set('trust proxy', 1);
 app.set('view engine', 'pug');
 app.set('views', path.resolve('public'));
@@ -151,20 +153,35 @@ app.post('/api/ul/ul', requiresAuth(), uploadSettings.any(), (req: any, res: exp
 app.get(`/api/videos/list/newest`, requiresAuth(), (_req: express.Request, res: express.Response) => {
   res.json({ "url": "https://huelet.net/w/pe3KhC40rENCtYcV/" });
 });
+app.post('/api/videos/list/new', requiresAuth(), (req: express.Request, res: express.Response) => {
+  const newUrl = req.body.url;
+  const newTitle = req.body.title;
+  const options = {
+    method: 'PATCH',
+    url: `https://huelet-cc.us.auth0.com/api/v2/users/${req.oidc.user.sub}`,
+    headers: { authorization: `Bearer ${process.env.AUTH0_BEARER}`, 'content-type': 'application/json' },
+    data: { app_metadata: { newestVideoUrl:newUrl } }
+  };
+  axios.request(options).then(function (response: { data: any; }) {
+    res.send("success");
+  }).catch(function (error: any) {
+    res.send(error);
+  });
+});
 app.get('/api/profiledata/nickname', requiresAuth(), (req: express.Request, res: express.Response) => {
   const requestedNickname = req.query.nick
   const options = {
     method: 'PATCH',
     url: `https://huelet-cc.us.auth0.com/api/v2/users/${req.oidc.user.sub}`,
-    headers: {authorization: `Bearer ${process.env.AUTH0_BEARER}`, 'content-type': 'application/json'},
-    data: {nickname: requestedNickname, name: requestedNickname}
+    headers: { authorization: `Bearer ${process.env.AUTH0_BEARER}`, 'content-type': 'application/json' },
+    data: { nickname: requestedNickname, name: requestedNickname }
   };
   axios.request(options).then(function (response: { data: any; }) {
     res.redirect(`/studio/me?uname=success&token=${useID()}`)
   }).catch(function (error: any) {
     console.error(error);
   });
-})
+});
 app.post('/api/profiledata/pfp/upload', uploadSettings.any(), requiresAuth(), (req: any, res: express.Response) => {
   const iurl = req.files[0].url;
   const fullUrl = iurl + globalSasToken;
