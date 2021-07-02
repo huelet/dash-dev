@@ -4,8 +4,6 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
 const rateLimit = require("express-rate-limit");
-const request = require('request');
-const { BlobServiceClient } = require('@azure/storage-blob');
 const multer = require('multer');
 const multerAzure = require('mazure');
 const { v1: uuidv1 } = require('uuid');
@@ -122,10 +120,26 @@ app.get('/api/ul/cf', requiresAuth(), (req: express.Request, res: express.Respon
     }
     ssh.exec(`cd /var/h && node cf.js --author "${author}" --title "${videoTitle}" --url "${videoUrl}"`, {
       out: function (stdout: any) {
-          const strout = stdout.replace("\\n", "")
+          const strout = stdout.replace("\n", "")
           res.json({ "pageUrl": strout })
         }
     }).start();
+});
+app.get('/api/ul/cl', requiresAuth(), (req: express.Request, res: express.Response) => {
+  const longLink = req.query.link;
+  const options = {
+    method: 'POST',
+    url: `https://firebasedynamiclinks.googleapis.com/v1/shortLinks?key=${process.env.FIREBASE_API_KEY}`,
+    headers: { 'content-type': 'application/json' },
+    data: {
+      "longDynamicLink": `${longLink}`
+     }
+  };
+  axios.request(options).then(function (response: { data: any; }) {
+    res.redirect(`/studio/me?uname=success&token=${useID()}`)
+  }).catch(function (error: any) {
+    console.error(error);
+  });
 });
 app.post('/api/ul/ul', requiresAuth(), uploadSettings.any(), (req: any, res: express.Response, _next: any) => {
   const vurl = req.files[0].url;
