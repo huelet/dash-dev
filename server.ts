@@ -136,7 +136,7 @@ app.get('/api/ul/cl', requiresAuth(), (req: express.Request, res: express.Respon
      }
   };
   axios.request(options).then(function (response: { data: any; }) {
-    res.redirect(`/studio/me?uname=success&token=${useID()}`)
+    res.json({ response})
   }).catch(function (error: any) {
     console.error(error);
   });
