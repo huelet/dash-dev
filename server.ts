@@ -70,17 +70,6 @@ app.get('/', (req: express.Request, res: express.Response) => {
     isAuthd: isAuthd
   })
 });
-app.get('/doubleauth/n', (req: express.Request, res: express.Response) => {
-  twilioClient.messages
-  .create({
-     body: `Your auth token is ${useID()}`,
-     from: '+12065932675',
-     to: '+12533327856'
-   })
-    .then((message: { sid: any; }) => console.log(message.sid))
-    .catch((error: Error) => console.log(error));
-  res.json({ success: true });
-});
 app.get('/ul', requiresAuth(), (_req: express.Request, res: express.Response) => {
   res.render('upload', { versionData: appVersion })
 });
@@ -199,6 +188,15 @@ app.post('/api/profiledata/pfp/upload', uploadSettings.any(), requiresAuth(), (r
     console.error(error);
   });
 })
+app.post('/api/profiledata/tripleauth/enable', uploadSettings.any(), requiresAuth(), (req: any, res: express.Response) => {
+  const tauthToken = useID();
+  const tauthNumber = req.body.taunum;
+  const options = {
+    method: 'PATCH',
+    url: `https://huelet-cc.us.auth0.com/api/v2/users/${req.oidc.user.sub}`,
+    headers: { authorization: `Bearer ${process.env.AUTH0_BEARER}`, 'content-type': 'application/json' },
+    data: { app_metadata: { triple_auth_token: tauthToken, triple_auth_number: tauthNumber, triple_auth_enabled: true } } }
+});
 // Flows
 app.get("/flow/dash/my", requiresAuth(), (req: any, res: any) => {
   const auth0id = req.oidc.user.sub;

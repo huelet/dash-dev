@@ -68,6 +68,10 @@ html(lang="en")
                     a(href="/studio/me/settings")
                       h2.p-4 Settings
               .container
+                .col-sm.border.border-secondary.rounded.p-5.b.c.d
+                  h2.center Set up TripleAuth
+                    form(action="/api/profiledata/tripleauth/enable", method="post")
+                      input#tel(type="tel", name="phn")
                 .row
                   .col-sm.border.border-secondary.rounded
                     #nickChange
