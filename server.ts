@@ -52,6 +52,9 @@ const profileUploadSettings = multer({
 });
 const globalSasToken = "?sv=2020-02-10&ss=b&srt=sco&sp=r&se=3000-06-27T09:40:10Z&st=2021-06-27T01:40:10Z&sip=0.0.0.0-255.255.255.255&spr=https&sig=LDOCpb7z9CSWk2GkFNlalqVWOhdwmwn2pSBWbSBnVtM%3D";
 const urlSafeSasToken = encodeURIComponent(globalSasToken);
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const twilioClient = require('twilio')(accountSid, authToken);
 const appVersion = `Huelet Dashboard running beta, v${versionData.version}`;
 app.use(auth(config));
 app.use(cors());
@@ -66,6 +69,15 @@ app.get('/', (req: express.Request, res: express.Response) => {
   res.render('home', {
     isAuthd: isAuthd
   })
+});
+app.get('/doubleauth/n', (req: express.Request, res: express.Response) => {
+  twilioClient.messages
+  .create({
+     body: `Your auth token is ${useID()}`,
+     from: '+12065932675',
+     to: '+14252180464'
+   })
+  .then((message: { sid: any; }) => console.log(message.sid));
 });
 app.get('/ul', requiresAuth(), (_req: express.Request, res: express.Response) => {
   res.render('upload', { versionData: appVersion })
@@ -101,6 +113,9 @@ app.get('/studio/profile', requiresAuth(), (req: express.Request, res: express.R
 app.get('/studio/profile/create', requiresAuth(), (req: express.Request, res: express.Response) => {
 
 })
+app.get('/studio/profile/edit', requiresAuth(), (req: express.Request, res: express.Response) => {
+  res.render('profile-edit', { pfp: req.oidc.user.picture, uname: req.oidc.user.nickname, email: req.oidc.user.email, uid: req.oidc.user.sub.replace("auth0|", ""), versionData: appVersion })
+})
 // APIS GALORE
 app.get('/api/userdata', requiresAuth(), (req: express.Request, res: express.Response) => {
   res.json(req.oidc.user)
@@ -126,22 +141,6 @@ app.get('/api/ul/cf', requiresAuth(), (req: express.Request, res: express.Respon
           res.json({ "pageUrl": strout })
         }
     }).start();
-});
-app.get('/api/ul/cl', requiresAuth(), (req: express.Request, res: express.Response) => {
-  const longLink = req.query.link;
-  const options = {
-    method: 'POST',
-    url: `https://firebasedynamiclinks.googleapis.com/v1/shortLinks?key=${process.env.FIREBASE_API_KEY}`,
-    headers: { 'content-type': 'application/json' },
-    data: {
-      "longDynamicLink": `${longLink}`
-     }
-  };
-  axios.request(options).then(function (response: { data: any; }) {
-    res.json({ response})
-  }).catch(function (error: any) {
-    console.error(error);
-  });
 });
 app.post('/api/ul/ul', requiresAuth(), uploadSettings.any(), (req: any, res: express.Response, _next: any) => {
   const vurl = req.files[0].url;
