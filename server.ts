@@ -75,7 +75,7 @@ app.get('/doubleauth/n', (req: express.Request, res: express.Response) => {
   .create({
      body: `Your auth token is ${useID()}`,
      from: '+12065932675',
-     to: '+14252180464'
+     to: '+12533327856'
    })
     .then((message: { sid: any; }) => console.log(message.sid))
     .catch((error: Error) => console.log(error));
