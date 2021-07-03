@@ -158,6 +158,25 @@ app.post('/api/videos/list/new', requiresAuth(), (req: express.Request, res: exp
     res.send(error);
   });
 });
+app.get('/api/getoken', requiresAuth(), (req: express.Request, res: express.Response) => {
+  var options = {
+    method: 'POST',
+    url: 'https://huelet-cc.us.auth0.com/oauth/token',
+    headers: {'content-type': 'application/x-www-form-urlencoded'},
+    data: {
+      grant_type: 'client_credentials',
+      client_id: 'nRoiHn0wBQUbMvHjtYE1XkN0SQs4hQY3',
+      client_secret: process.env.AUTH0_SECRET,
+      audience: 'https://huelet-cc.us.auth0.com/api/v2/'
+    }
+  };
+  
+  axios.request(options).then(function (response: { data: any; }) {
+    console.log(response.data);
+  }).catch(function (error: any) {
+    console.error(error);
+  });
+})
 app.get('/api/profiledata/nickname', requiresAuth(), (req: express.Request, res: express.Response) => {
   const requestedNickname = req.query.nick
   const options = {
@@ -194,7 +213,7 @@ app.post('/api/profiledata/tripleauth/enable', uploadSettings.any(), requiresAut
   const options = {
     method: 'PATCH',
     url: `https://huelet-cc.us.auth0.com/api/v2/users/${req.oidc.user.sub}`,
-    headers: { authorization: `Bearer ${process.env.AUTH0_BEARER}`, 'content-type': 'application/json' },
+    headers: {authorization: `Bearer ${process.env.AUTH0_BEARER}`, 'content-type': 'application/json'},
     data: { user_metadata: { triple_auth_token: tauthToken, triple_auth_number: tauthNumber, triple_auth_enabled: true } }
   }
   axios.request(options).then(function (response: { data: any; }) {
