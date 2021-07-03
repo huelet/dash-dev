@@ -195,7 +195,14 @@ app.post('/api/profiledata/tripleauth/enable', uploadSettings.any(), requiresAut
     method: 'PATCH',
     url: `https://huelet-cc.us.auth0.com/api/v2/users/${req.oidc.user.sub}`,
     headers: { authorization: `Bearer ${process.env.AUTH0_BEARER}`, 'content-type': 'application/json' },
-    data: { app_metadata: { triple_auth_token: tauthToken, triple_auth_number: tauthNumber, triple_auth_enabled: true } } }
+    data: { user_metadata: { triple_auth_token: tauthToken, triple_auth_number: tauthNumber, triple_auth_enabled: true } }
+  }
+  axios.request(options).then(function (response: { data: any; }) {
+    res.send("success");
+  }).catch(function (error: any) {
+    res.send(error);
+    console.error(error);
+  });
 });
 // Flows
 app.get("/flow/dash/my", requiresAuth(), (req: any, res: any) => {
