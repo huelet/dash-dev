@@ -164,16 +164,17 @@ app.get('/api/getoken', requiresAuth(), (req: express.Request, res: express.Resp
     url: 'https://huelet-cc.us.auth0.com/oauth/token',
     headers: {'content-type': 'application/x-www-form-urlencoded'},
     data: {
-      grant_type: 'client_credentials',
       client_id: 'mdSjmpL4COkVNxju2LcmR5tExF6vmGT9',
-      client_secret: process.env.AUTH0_SECRET,
+      client_secret: process.env.AUTH0_CLIENT_SECRET,
       audience: 'https://huelet-cc.us.auth0.com/api/v2/'
     }
   };
   
   axios.request(options).then(function (response: { data: any; }) {
+    res.send(response.data);
     console.log(response.data);
   }).catch(function (error: any) {
+    res.send(error);
     console.error(error);
   });
 })
