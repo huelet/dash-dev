@@ -77,7 +77,8 @@ app.get('/doubleauth/n', (req: express.Request, res: express.Response) => {
      from: '+12065932675',
      to: '+14252180464'
    })
-    .then((message: { sid: any; }) => console.log(message.sid));
+    .then((message: { sid: any; }) => console.log(message.sid))
+    .catch((error: Error) => console.log(error));
   res.json({ success: true });
 });
 app.get('/ul', requiresAuth(), (_req: express.Request, res: express.Response) => {
