@@ -165,7 +165,7 @@ app.get('/api/getoken', requiresAuth(), (req: express.Request, res: express.Resp
     headers: {'content-type': 'application/x-www-form-urlencoded'},
     data: {
       grant_type: 'client_credentials',
-      client_id: 'nRoiHn0wBQUbMvHjtYE1XkN0SQs4hQY3',
+      client_id: 'mdSjmpL4COkVNxju2LcmR5tExF6vmGT9',
       client_secret: process.env.AUTH0_SECRET,
       audience: 'https://huelet-cc.us.auth0.com/api/v2/'
     }
