@@ -368,10 +368,9 @@ head
       .p-5.a.b.c
         .p-5.b.c.d
           .flex-container.mb-3
-            img.pfpimg.i10n__todo(src='https://bingus.dothq.workers.dev' alt='Your profile picture' width='180' height='180')
-            h2.display-4.p-4 Bingus
-          h4.display-6.p-4
-            | bingus@me.lon
+            img.pfpimg.i10n__todo(src=`${pfp}` alt='Your profile picture' width='180' height='180')
+            h2.display-4.p-4=uname
+          h4.display-6.p-4=email
             a(href='/ul')
               .ulbtn.Button-is-primary.clu Upload
           .alert.alert-secondary.d-flex.flex-row
@@ -387,7 +386,7 @@ head
                 h2.p-4.listlink.listlink--primary
                   | Public Profile
             .dir__item.i10n__todo
-              a(href='https://slatch.huelet.net/vrUser?u=60ca2b9cd2fc940071e3cda1&ref=tdash' target='_blank')
+              a(href=`https://slatch.huelet.net/vrUser?u=${uid}&ref=tdash` target='_blank')
                 h2.p-4.listlink.listlink--primary Earnings
             .dir__item.i10n__todo
               a(href='/studio/me/settings')
