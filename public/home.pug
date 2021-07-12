@@ -25,14 +25,16 @@ html(lang="en")
     include incl/scripts
   body
     if isAuthd === true
-      h2.Section--title Welcome back! Let's get you where you need to be.
-      div.p-4
-        div.Button.Button-is-primary
-          a(href="/flow/dash/my") Your dashboard
-        div.Button.Button-is-primary
-          a(href="/flow/dash/my/settings") Your settings
-        a(href="/flow/dash/my/videos")
-          div.Button.Button-is-primary Your videos
+      .HeroSection
+        .HeroSection--column
+          h2.Section--title Welcome back! Let's get you where you need to be.
+          div.p-4
+            a.p-4(href="/flow/dash/my")
+              div.Button.Button-is-primary Your dashboard
+            a.p-4(href="/flow/dash/my/settings")
+              div.Button.Button-is-primary Your settings
+            a.p-4(href="/flow/dash/my/videos")
+              div.Button.Button-is-primary Your videos
     else
       div.login
         h2.center.display-4
