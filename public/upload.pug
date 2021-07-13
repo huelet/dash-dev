@@ -16,8 +16,8 @@ html(lang="en")
             }
     body
         form(enctype="multipart/form-data", id="btat")
-                input#chooseFile(type='file', name='chooseFile', required, accept="video/*")
                 button.Button.Button-is-primary.btat(type="submit") Upload
+                input#chooseFile(type='file', name='chooseFile', required, accept="video/*")
         script(src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.0.min.js")
         script.
             $("form#btat").submit(function(event){
