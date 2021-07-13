@@ -138,7 +138,7 @@ app.post('/api/ul/ul', requiresAuth(), uploadSettings.any(), (req: any, res: exp
   const fullUrl = vurl + globalSasToken;
   const safeUrl = encodeURIComponent(fullUrl);
   console.log(safeUrl)
-  res.status(200).redirect(`/studio/uploadSuccess?cuurl=${safeUrl}&webauthor=${req.oidc.user.nickname}&token=${useID()}`)
+  res.status(200).send(`/studio/uploadSuccess?cuurl=${safeUrl}&webauthor=${req.oidc.user.nickname}&token=${useID()}`)
 });
 app.get(`/api/videos/list/newest`, requiresAuth(), (_req: express.Request, res: express.Response) => {
   res.json({ "url": "https://huelet.net/w/pe3KhC40rENCtYcV/" });
