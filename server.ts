@@ -52,9 +52,6 @@ const profileUploadSettings = multer({
 });
 const globalSasToken = "?sv=2020-02-10&ss=b&srt=sco&sp=r&se=3000-06-27T09:40:10Z&st=2021-06-27T01:40:10Z&sip=0.0.0.0-255.255.255.255&spr=https&sig=LDOCpb7z9CSWk2GkFNlalqVWOhdwmwn2pSBWbSBnVtM%3D";
 const urlSafeSasToken = encodeURIComponent(globalSasToken);
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToken = process.env.TWILIO_AUTH_TOKEN;
-const twilioClient = require('twilio')(accountSid, authToken);
 const appVersion = `Huelet Dashboard running beta, v${versionData.version}`;
 app.use(auth(config));
 app.use(cors());
@@ -84,6 +81,10 @@ app.get('/studio/uploadSuccess', requiresAuth(), (req: express.Request, res: exp
 app.get('/studio/videos', requiresAuth(), (_req: express.Request, res: express.Response) => {
   res.json({ "i'm still in development": "it's not ready yet" })
 });
+// Easter eggs
+app.get('/%F0%9F%98%89', (_req: express.Request, res: express.Response) => {
+  res.redirect('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+})
 // Profile and settings
 app.get(`/studio/me`, requiresAuth(), (req: express.Request, res: express.Response) => {
   const auth0id = req.oidc.user.sub;
