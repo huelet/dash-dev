@@ -1,6 +1,5 @@
 import express, { response } from "express";
-import * as dotenv from 'dotenv';
-dotenv.config();
+require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 3000;
 const rateLimit = require("express-rate-limit");
@@ -12,6 +11,10 @@ const axios = require("axios").default;
 const SSH = require('simple-ssh');
 const versionData = require('./verdata.json')
 const { useID } = require('@dothq/id');
+const { Sequelize } = require('sequelize');
+import { createClient } from '@supabase/supabase-js'
+const supabase = createClient('https://wasvkbhhiswaurtgvmph.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYyNjkyMzUyOCwiZXhwIjoxOTQyNDk5NTI4fQ.tsr_5hacH27uCW9Hi5-q6nnTPjtqlVR1NQclpinKqRc')
+const sql = new Sequelize(`postgres://postgres:${process.env.SUPABASE_DB_PASSWORD}@db.wasvkbhhiswaurtgvmph.supabase.co:5432/postgres`)
 import pug from 'pug';
 import path from 'path';
 import { auth, requiresAuth } from 'express-openid-connect';
@@ -60,6 +63,14 @@ app.use(express.urlencoded({ extended: true }));
 app.set('trust proxy', 1);
 app.set('view engine', 'pug');
 app.set('views', path.resolve('public'));
+// DB stuff
+try {
+  sql.authenticate();
+  console.log('✔️  DB works');
+} catch (error) {
+  console.error('❌  DB error: ', error);
+}
+// ok now we have a db, lets start the API
 app.get('/', (req: express.Request, res: express.Response) => {
   // I can't think of any good variable names so screw it
   const isAuthd = req.oidc.isAuthenticated()
@@ -77,6 +88,9 @@ app.get('/studio/uploadSuccess', requiresAuth(), (req: express.Request, res: exp
   } else {
     res.render('success', { authorName: req.oidc.user.nickname, versionData: appVersion })
   }
+});
+app.get('/test-nv', (_req: express.Request, res: express.Response) => {
+  res.render('test-nv', { versionData: appVersion })
 });
 app.get('/studio/videos', requiresAuth(), (_req: express.Request, res: express.Response) => {
   res.json({ "i'm still in development": "it's not ready yet" })
@@ -144,20 +158,12 @@ app.post('/api/ul/ul', requiresAuth(), uploadSettings.any(), (req: any, res: exp
 app.get(`/api/videos/list/newest`, requiresAuth(), (_req: express.Request, res: express.Response) => {
   res.json({ "url": "https://huelet.net/w/pe3KhC40rENCtYcV/" });
 });
-app.post('/api/videos/list/new', requiresAuth(), (req: express.Request, res: express.Response) => {
+app.post('/api/videos/list/new', (req: express.Request, res: express.Response) => {
   const newUrl = req.body.url;
   const newTitle = req.body.title;
-  const options = {
-    method: 'PATCH',
-    url: `https://huelet-cc.us.auth0.com/api/v2/users/${req.oidc.user.sub}`,
-    headers: { authorization: `Bearer ${process.env.AUTH0_BEARER}`, 'content-type': 'application/json' },
-    data: { app_metadata: { newestVideoUrl:newUrl } }
-  };
-  axios.request(options).then(function (response: { data: any; }) {
-    res.send("success");
-  }).catch(function (error: any) {
-    res.send(error);
-  });
+  const currentAuthor = req.body.author;
+  const id = newUrl.replace('https://huelet.net/w/', '/', '');
+  sql.query(`INSERT INTO videos ("url", "title", "author")\nVALUES ("${id}", "${newUrl}", "${newTitle}", "${currentAuthor}");`);
 });
 app.get('/api/getoken', requiresAuth(), (req: express.Request, res: express.Response) => {
   var options = {
@@ -193,9 +199,13 @@ app.get('/api/profiledata/nickname', requiresAuth(), (req: express.Request, res:
     console.error(error);
   });
 });
-app.post('/api/profiledata/pfp/upload', uploadSettings.any(), requiresAuth(), (req: any, res: express.Response) => {
-  const iurl = req.files[0].url;
-  const fullUrl = iurl + globalSasToken;
+app.post('/api/profiledata/pfp/upload', requiresAuth(), async (req: any, res: express.Response) => {
+  const avatarFile = req.body.file;
+  const { data, error } = await supabase.storage
+  .from('avatars')
+  .upload('public/avatar1.png', avatarFile)
+  res.send(data);
+  /*
   const options = {
     method: 'PATCH',
     url: `https://huelet-cc.us.auth0.com/api/v2/users/${req.oidc.user.sub}`,
@@ -208,6 +218,7 @@ app.post('/api/profiledata/pfp/upload', uploadSettings.any(), requiresAuth(), (r
     res.redirect(`/studio/me?pfp=failure&token=${useID()}`)
     console.error(error);
   });
+  */
 })
 app.post('/api/profiledata/tripleauth/enable', uploadSettings.any(), requiresAuth(), (req: any, res: express.Response) => {
   const tauthToken = useID();

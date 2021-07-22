@@ -6,13 +6,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "start": "tsc && node --experimental-modules server.js"
+    "start": "tsc && node --experimental-modules server.js",
+    "rand": "tsc rand.ts && node rand.js"
   },
   "author": "Levi Richardson",
   "license": "GPL-3.0",
   "dependencies": {
     "@azure/storage-blob": "^12.5.0",
     "@dothq/id": "^1.0.1",
+    "@supabase/supabase-js": "^1.20.0",
     "@types/into-stream": "^3.1.1",
     "@types/multer": "^1.4.5",
     "@types/pug": "^2.0.4",
@@ -28,10 +30,14 @@
     "formidable": "^1.2.2",
     "mazure": "^2.0.1",
     "multer": "^1.4.2",
+    "node-fetch": "^2.6.1",
     "nodemailer": "^6.6.2",
     "path": "^0.12.7",
+    "pg": "^8.6.0",
+    "pg-hstore": "^2.3.4",
     "pug": "^3.0.2",
     "request": "^2.88.2",
+    "sequelize": "^6.6.5",
     "simple-ssh": "^1.0.0",
     "typescript": "^4.3.2"
   },
