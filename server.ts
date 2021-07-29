@@ -65,12 +65,6 @@ try {
 } catch (error) {
   console.error('❌  DB error: ', error);
 }
-// random functions becuase i dont know where else to put them
-async function getRandomString() {
-  fetch("https://www.random.org/strings/?num=1&len=16&digits=on&upperalpha=on&loweralpha=on&unique=on&format=plain&rnd=new")
-  .then((response: any) => response.text())
-  .then((data: any) => console.log(data));
-}
 // ok now we have a db, lets start the API
 app.get('/', (req: express.Request, res: express.Response) => {
   // I can't think of any good variable names so screw it
@@ -139,8 +133,8 @@ app.get('/api/ul/cf', requiresAuth(), (req: express.Request, res: express.Respon
     if (videoTitle === undefined || author === undefined || videoUrlEncoded === undefined) {
         res.json({ error: 'not all tokens have been sent' })
   }
-  res.send(getRandomString());
-  sql.query(`INSERT INTO vdata (uvid, vtitle, vurl, vauthor)\nVALUES (${getRandomString()}, ${videoTitle}, ${finalUrl}, ${author})`)
+  const rUrl = "https://www.random.org/strings/?num=1&len=16&digits=on&upperalpha=on&loweralpha=on&unique=on&format=plain&rnd=new"
+  fetch(rUrl).then((res: { text: () => any; }) => res.text()).then((text: string) => text.replace('\n', '')).then((text: any) => sql.query(`INSERT INTO vdata (uvid, vtitle, vurl, vauthor)\nVALUES (${text}, ${videoTitle}, ${finalUrl}, ${author})`));
 });
 app.post('/api/ul/ul', requiresAuth(), uploadSettings.any(), (req: any, res: express.Response, _next: any) => {
   const vurl = req.files[0].url;
