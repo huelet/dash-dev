@@ -145,6 +145,7 @@ app.get('/api/ul/cf', requiresAuth(), (req: express.Request, res: express.Respon
     if (videoTitle === undefined || author === undefined || videoUrlEncoded === undefined) {
         res.json({ error: 'not all tokens have been sent' })
   }
+  res.send(getRandomString());
   sql.query(`INSERT INTO vdata (uvid, vtitle, vurl, vauthor)\nVALUES (${getRandomString()}, ${videoTitle}, ${finalUrl}, ${author})`)
 });
 app.post('/api/ul/ul', requiresAuth(), uploadSettings.any(), (req: any, res: express.Response, _next: any) => {
