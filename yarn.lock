@@ -438,7 +438,7 @@ asap@~2.0.3:
   resolved "https://registry.npmjs.org/asap/-/asap-2.0.6.tgz"
   integrity sha1-5QNHYR1+aQlDIIu9r+vLwvuGbUY=
 
-asn1@~0.2.0, asn1@~0.2.3:
+asn1@~0.2.3:
   version "0.2.4"
   resolved "https://registry.npmjs.org/asn1/-/asn1-0.2.4.tgz"
   integrity sha512-jxwzQpLQjSmWXgwaCZE9Nz+glAG01yF1QnWgbhGwHI5A6FRIEY6IVqtHhIepHqI7/kyEyQEagBC5mBEFlIYvdg==
@@ -1645,11 +1645,6 @@ node-uuid@~1.4.0, node-uuid@~1.4.7:
   resolved "https://registry.npmjs.org/node-uuid/-/node-uuid-1.4.8.tgz"
   integrity sha1-sEDrCSOWivq/jTL7HxfxFn/auQc=
 
-nodemailer@^6.6.2:
-  version "6.6.2"
-  resolved "https://registry.npmjs.org/nodemailer/-/nodemailer-6.6.2.tgz"
-  integrity sha512-YSzu7TLbI+bsjCis/TZlAXBoM4y93HhlIgo0P5oiA2ua9Z4k+E2Fod//ybIzdJxOlXGRcHIh/WaeCBehvxZb/Q==
-
 normalize-url@^4.1.0:
   version "4.5.1"
   resolved "https://registry.npmjs.org/normalize-url/-/normalize-url-4.5.1.tgz"
@@ -2200,11 +2195,6 @@ sax@>=0.6.0:
   resolved "https://registry.npmjs.org/sax/-/sax-1.2.4.tgz"
   integrity sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
 
-semver@^5.1.0:
-  version "5.7.1"
-  resolved "https://registry.npmjs.org/semver/-/semver-5.7.1.tgz"
-  integrity sha512-sauaDf/PZdVgrLTNYHRtpXa1iRiKcaebiKQ1BJdpQlWH2lCvexQdX55snPFyK7QzpudqbCI0qXFfOasHdyNDGQ==
-
 semver@^7.3.2:
   version "7.3.5"
   resolved "https://registry.yarnpkg.com/semver/-/semver-7.3.5.tgz#0b621c879348d8998e4b0e4be94b3f12e6018ef7"
@@ -2275,14 +2265,6 @@ setprototypeof@1.2.0:
   resolved "https://registry.npmjs.org/setprototypeof/-/setprototypeof-1.2.0.tgz"
   integrity sha512-E5LDX7Wrp85Kil5bhZv46j8jOeboKq5JMmYM3gVGdGH8xFpPWXUMsNrlODCrkoxMEeNi/XZIwuRvY4XNwYMJpw==
 
-simple-ssh@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/simple-ssh/-/simple-ssh-1.0.0.tgz"
-  integrity sha512-k0q/6oiY9HQLbPBDZMDLhbU9Em8EDdIEec08TwosijKhFQYK403nyO7Y+iX1AOOn60XVo688jby6NuV720vIUQ==
-  dependencies:
-    ssh2 "^0.5.0"
-    xtend "^4.0.1"
-
 sntp@1.x.x:
   version "1.0.9"
   resolved "https://registry.npmjs.org/sntp/-/sntp-1.0.9.tgz"
@@ -2296,22 +2278,6 @@ split2@^3.1.1:
   integrity sha512-9NThjpgZnifTkJpzTZ7Eue85S49QwpNhZTq6GRJwObb6jnLFNGB7Qm73V5HewTROPyxD0C29xqmaI68bQtV+hg==
   dependencies:
     readable-stream "^3.0.0"
-
-ssh2-streams@~0.1.18:
-  version "0.1.20"
-  resolved "https://registry.npmjs.org/ssh2-streams/-/ssh2-streams-0.1.20.tgz"
-  integrity sha1-URGNFUVV31Rp7h9n4M8efoosDjo=
-  dependencies:
-    asn1 "~0.2.0"
-    semver "^5.1.0"
-    streamsearch "~0.1.2"
-
-ssh2@^0.5.0:
-  version "0.5.5"
-  resolved "https://registry.npmjs.org/ssh2/-/ssh2-0.5.5.tgz"
-  integrity sha1-x3gezS7OcwSiU89iD6taXCK7IjU=
-  dependencies:
-    ssh2-streams "~0.1.18"
 
 sshpk@^1.7.0:
   version "1.16.1"
@@ -2333,7 +2299,7 @@ sshpk@^1.7.0:
   resolved "https://registry.npmjs.org/statuses/-/statuses-1.5.0.tgz"
   integrity sha1-Fhx9rBd2Wf2YEfQ3cfqZOBR4Yow=
 
-streamsearch@0.1.2, streamsearch@~0.1.2:
+streamsearch@0.1.2:
   version "0.1.2"
   resolved "https://registry.npmjs.org/streamsearch/-/streamsearch-0.1.2.tgz"
   integrity sha1-gIudDlb8Jz2Am6VzOOkpkZoanxo=
@@ -2634,7 +2600,7 @@ xmlbuilder@~11.0.0:
   resolved "https://registry.npmjs.org/xmlbuilder/-/xmlbuilder-11.0.1.tgz"
   integrity sha512-fDlsI/kFEx7gLvbecc0/ohLG50fugQp8ryHzMTuW9vSa1GJ0XYWKnhsUx7oie3G98+r56aTQIUB4kht42R3JvA==
 
-xtend@^4.0.0, xtend@^4.0.1:
+xtend@^4.0.0:
   version "4.0.2"
   resolved "https://registry.npmjs.org/xtend/-/xtend-4.0.2.tgz"
   integrity sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==

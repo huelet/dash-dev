@@ -5,24 +5,19 @@ const port = process.env.PORT || 3000;
 const rateLimit = require("express-rate-limit");
 const multer = require('multer');
 const multerAzure = require('mazure');
+const request = require('request');
 const { v1: uuidv1 } = require('uuid');
 const cors = require('cors');
 const axios = require("axios").default;
-const SSH = require('simple-ssh');
 const versionData = require('./verdata.json')
 const { useID } = require('@dothq/id');
 const { Sequelize } = require('sequelize');
 import { createClient } from '@supabase/supabase-js'
-const supabase = createClient('https://wasvkbhhiswaurtgvmph.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYyNjkyMzUyOCwiZXhwIjoxOTQyNDk5NTI4fQ.tsr_5hacH27uCW9Hi5-q6nnTPjtqlVR1NQclpinKqRc')
+const supabase = createClient('https://wasvkbhhiswaurtgvmph.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoic2VydmljZV9yb2xlIiwiaWF0IjoxNjI2OTIzNTI4LCJleHAiOjE5NDI0OTk1Mjh9.61EQEJJjSygJMFGHWPK7em1oUIzRYAen1VgM_Clt3cY')
 const sql = new Sequelize(`postgres://postgres:${process.env.SUPABASE_DB_PASSWORD}@db.wasvkbhhiswaurtgvmph.supabase.co:5432/postgres`)
 import pug from 'pug';
 import path from 'path';
 import { auth, requiresAuth } from 'express-openid-connect';
-const ssh = new SSH({
-    host: process.env.HOSTURL,
-    user: process.env.HOSTUNAME,
-    pass: process.env.HOSTPWD
-});
 const config = {
     authRequired: false,
     auth0Logout: true,
@@ -70,6 +65,18 @@ try {
 } catch (error) {
   console.error('❌  DB error: ', error);
 }
+// random functions becuase i dont know where else to put them
+async function getRandomString() {
+  const options = {url: 'https://www.random.org/strings/?num=1&len=16&digits=on&upperalpha=on&loweralpha=on&unique=on&format=plain&rnd=new'};
+
+function callback(error: any, response: { statusCode: number; }, body: any) {
+    if (!error && response.statusCode == 200) {
+        console.log(body);
+    }
+}
+
+request(options, callback);
+}
 // ok now we have a db, lets start the API
 app.get('/', (req: express.Request, res: express.Response) => {
   // I can't think of any good variable names so screw it
@@ -100,10 +107,8 @@ app.get('/%F0%9F%98%89', (_req: express.Request, res: express.Response) => {
   res.redirect('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
 })
 // Profile and settings
-app.get(`/studio/me`, requiresAuth(), (req: express.Request, res: express.Response) => {
-  const auth0id = req.oidc.user.sub;
-  const uid = auth0id.replace("auth0|", "")
-  res.render('profile', { pfp: req.oidc.user.picture, uname: req.oidc.user.nickname, email: req.oidc.user.email, uid: uid, versionData: appVersion })
+app.get(`/studio/me`, (req: express.Request, res: express.Response) => {
+  res.render('profile')
 });
 // Analytics (lord have mercy on my soul)
 app.get(`/studio/analytics`, requiresAuth(), (_req: express.Request, res: express.Response) => {
@@ -136,17 +141,11 @@ app.get('/api/ul/cf', requiresAuth(), (req: express.Request, res: express.Respon
   const videoUrlEncoded: any = req.query.cuurl;
   const author = req.query.authortitle;
   const videoUrl = decodeURIComponent(videoUrlEncoded);
-  console.log(videoUrl)
-    const mailingAddress = req.oidc.user.email;
+  const finalUrl = videoUrl.replace("hueletvideostorage.blob.core.windows.net", "videos.cdn.huelet.net");
     if (videoTitle === undefined || author === undefined || videoUrlEncoded === undefined) {
         res.json({ error: 'not all tokens have been sent' })
-    }
-    ssh.exec(`cd /var/h && node cf.js --author "${author}" --title "${videoTitle}" --url "${videoUrl}"`, {
-      out: function (stdout: any) {
-          const strout = stdout.replace("\n", "")
-          res.json({ "pageUrl": strout })
-        }
-    }).start();
+  }
+  sql.query(`INSERT INTO vdata (uvid, vtitle, vurl, vauthor)\nVALUES (${getRandomString()}, ${videoTitle}, ${finalUrl}, ${author})`)
 });
 app.post('/api/ul/ul', requiresAuth(), uploadSettings.any(), (req: any, res: express.Response, _next: any) => {
   const vurl = req.files[0].url;
@@ -199,27 +198,6 @@ app.get('/api/profiledata/nickname', requiresAuth(), (req: express.Request, res:
     console.error(error);
   });
 });
-app.post('/api/profiledata/pfp/upload', requiresAuth(), async (req: any, res: express.Response) => {
-  const avatarFile = req.body.file;
-  const { data, error } = await supabase.storage
-  .from('avatars')
-  .upload('public/avatar1.png', avatarFile)
-  res.send(data);
-  /*
-  const options = {
-    method: 'PATCH',
-    url: `https://huelet-cc.us.auth0.com/api/v2/users/${req.oidc.user.sub}`,
-    headers: {authorization: `Bearer ${process.env.AUTH0_BEARER}`, 'content-type': 'application/json'},
-    data: {picture: fullUrl}
-  };
-  axios.request(options).then(function (response: { data: any; }) {
-    res.redirect(`/studio/me?pfp=success&token=${useID()}`)
-  }).catch(function (error: any) {
-    res.redirect(`/studio/me?pfp=failure&token=${useID()}`)
-    console.error(error);
-  });
-  */
-})
 app.post('/api/profiledata/tripleauth/enable', uploadSettings.any(), requiresAuth(), (req: any, res: express.Response) => {
   const tauthToken = useID();
   const tauthNumber = req.body.taunum;
