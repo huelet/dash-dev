@@ -5,7 +5,7 @@ const port = process.env.PORT || 3000;
 const rateLimit = require("express-rate-limit");
 const multer = require('multer');
 const multerAzure = require('mazure');
-const request = require('request');
+const fetch = require('node-fetch');
 const { v1: uuidv1 } = require('uuid');
 const cors = require('cors');
 const axios = require("axios").default;
@@ -67,15 +67,9 @@ try {
 }
 // random functions becuase i dont know where else to put them
 async function getRandomString() {
-  const options = {url: 'https://www.random.org/strings/?num=1&len=16&digits=on&upperalpha=on&loweralpha=on&unique=on&format=plain&rnd=new'};
-
-function callback(error: any, response: { statusCode: number; }, body: any) {
-    if (!error && response.statusCode == 200) {
-        console.log(body);
-    }
-}
-
-request(options, callback);
+  fetch("https://www.random.org/strings/?num=1&len=16&digits=on&upperalpha=on&loweralpha=on&unique=on&format=plain&rnd=new")
+  .then((response: any) => response.text())
+  .then((data: any) => console.log(data));
 }
 // ok now we have a db, lets start the API
 app.get('/', (req: express.Request, res: express.Response) => {
@@ -113,9 +107,9 @@ app.get(`/studio/me`, (req: express.Request, res: express.Response) => {
 // Analytics (lord have mercy on my soul)
 app.get(`/studio/analytics`, requiresAuth(), (_req: express.Request, res: express.Response) => {
   fetch('/api/videos/list/newest')
-    .then(response => response.json())
-    .then(encodedUrl => encodeURIComponent(encodedUrl.url))
-  .then(urlEncoded => res.render('analytics', { analyticsUrl: urlEncoded, versionData: appVersion }))
+    .then((response: { json: () => any; }) => response.json())
+    .then((encodedUrl: { url: string | number | boolean; }) => encodeURIComponent(encodedUrl.url))
+  .then((urlEncoded: any) => res.render('analytics', { analyticsUrl: urlEncoded, versionData: appVersion }))
 });
 
 app.get('/studio/profile', requiresAuth(), (req: express.Request, res: express.Response) => {
