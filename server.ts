@@ -1,11 +1,12 @@
 import express, { response } from "express";
 require('dotenv').config();
 const app = express();
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 const rateLimit = require("express-rate-limit");
 const multer = require('multer');
 const multerAzure = require('mazure');
 const fetch = require('node-fetch');
+const poke = require('js.poke');
 const { v1: uuidv1 } = require('uuid');
 const cors = require('cors');
 const axios = require("axios").default;
@@ -21,7 +22,7 @@ import { auth, requiresAuth } from 'express-openid-connect';
 const config = {
     authRequired: false,
     auth0Logout: true,
-    baseURL: 'https://huelet-dash-dev.herokuapp.com/',
+    baseURL: 'https://dev.dash.huelet.net/',
     clientID: 'WZEqB5TB7eCsBjApsyJglUKNvqYxQkQG',
     issuerBaseURL: 'https://huelet-cc.us.auth0.com',
     secret: process.env.AUTH0_SECRET
@@ -95,15 +96,19 @@ app.get('/%F0%9F%98%89', (_req: express.Request, res: express.Response) => {
   res.redirect('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
 })
 // Profile and settings
-app.get(`/studio/me`, (req: express.Request, res: express.Response) => {
-  res.render('profile')
+app.get(`/studio/me`, requiresAuth(), (req: express.Request, res: express.Response) => {
+  let { sub, email, nickname, picture } = req.oidc.user;
+  let uid = sub.replace('auth0|', '');
+  res.render('profile', { uid: uid, email: email, pfp: picture, uname: nickname, versionData: appVersion })
 });
 // Analytics (lord have mercy on my soul)
 app.get(`/studio/analytics`, requiresAuth(), (_req: express.Request, res: express.Response) => {
-  fetch('/api/videos/list/newest')
-    .then((response: { json: () => any; }) => response.json())
-    .then((encodedUrl: { url: string | number | boolean; }) => encodeURIComponent(encodedUrl.url))
-  .then((urlEncoded: any) => res.render('analytics', { analyticsUrl: urlEncoded, versionData: appVersion }))
+  poke('http://localhost/api/videos/list/newest', {
+    port: 3000
+  })
+    .promise()
+    .then((data: any) => encodeURIComponent(JSON.parse(data.body).url))
+    .then((urlEncoded: any) => res.render('analytics', { analyticsUrl: urlEncoded, versionData: appVersion }));
 });
 
 app.get('/studio/profile', requiresAuth(), (req: express.Request, res: express.Response) => {
@@ -143,8 +148,8 @@ app.post('/api/ul/ul', requiresAuth(), uploadSettings.any(), (req: any, res: exp
   console.log(safeUrl)
   res.status(200).send(`/studio/uploadSuccess?cuurl=${safeUrl}&webauthor=${req.oidc.user.nickname}&token=${useID()}`)
 });
-app.get(`/api/videos/list/newest`, requiresAuth(), (_req: express.Request, res: express.Response) => {
-  res.json({ "url": "https://huelet.net/w/pe3KhC40rENCtYcV/" });
+app.get(`/api/videos/list/newest`, (_req: express.Request, res: express.Response) => {
+  
 });
 app.post('/api/videos/list/new', (req: express.Request, res: express.Response) => {
   const newUrl = req.body.url;
@@ -219,6 +224,6 @@ app.get("/flow/dash/my/videos", requiresAuth(), (req: any, res: any) => {
   const uid = auth0id.replace("auth0|", "");
   res.redirect(`/studio/videos`);
 });
-app.listen(port, () => {
-  console.log(`Server listening on port ${port}, available at http://localhost:${port}`)
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}, available at http://localhost:${PORT}`)
 });
