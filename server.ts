@@ -13,12 +13,16 @@ const axios = require("axios").default;
 const versionData = require('./verdata.json')
 const { useID } = require('@dothq/id');
 const { Sequelize } = require('sequelize');
+const { MeiliSearch } = require('meilisearch')
 import { createClient } from '@supabase/supabase-js'
 const supabase = createClient('https://wasvkbhhiswaurtgvmph.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoic2VydmljZV9yb2xlIiwiaWF0IjoxNjI2OTIzNTI4LCJleHAiOjE5NDI0OTk1Mjh9.61EQEJJjSygJMFGHWPK7em1oUIzRYAen1VgM_Clt3cY')
 const sql = new Sequelize(`postgres://postgres:${process.env.SUPABASE_DB_PASSWORD}@db.wasvkbhhiswaurtgvmph.supabase.co:5432/postgres`)
 import pug from 'pug';
 import path from 'path';
 import { auth, requiresAuth } from 'express-openid-connect';
+// Search init
+const search = new MeiliSearch({ host: 'https://search.huelet.net/', apiKey: '9941c5593840a732623257300eedf439f95a53d3c592a2e1e4ab143f86f25a24' });
+// Auth init
 const config = {
     authRequired: false,
     auth0Logout: true,
@@ -138,6 +142,11 @@ app.get('/api/ul/cf', requiresAuth(), (req: express.Request, res: express.Respon
     if (videoTitle === undefined || author === undefined || videoUrlEncoded === undefined) {
         res.json({ error: 'not all tokens have been sent' })
   }
+  search.index('videos').addDocuments([{
+    "vuid": finalUrl,
+    "title": videoTitle,
+    "author": author,
+  }])
   const rUrl = "https://www.random.org/strings/?num=1&len=16&digits=on&upperalpha=on&loweralpha=on&unique=on&format=plain&rnd=new"
   fetch(rUrl).then((res: { text: () => any; }) => res.text()).then((text: string) => text.replace('\n', '')).then((text: any) => sql.query(`INSERT INTO vdata (uvid, vtitle, vurl, vauthor)\nVALUES ('${text}', '${videoTitle}', '${finalUrl}', '${author}')`));
 });
