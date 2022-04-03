@@ -47,7 +47,10 @@ app.get("/flow/in", (req: express.Request, res: express.Response) => {
     res.redirect("/studio/profile");
   }
 });
-app.get("/upload", (req: express.Request, res: express.Response) => {
+app.get("/studio/profile", (req: express.Request, res: express.Response) => {
+  
+})
+app.get("/studio/upload", (req: express.Request, res: express.Response) => {
   if (!req.cookies._hltoken) {
     res.redirect("/");
   } else if (req.cookies._hltoken) {

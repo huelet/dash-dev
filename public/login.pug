@@ -391,8 +391,8 @@ script.
             const data = await resp.json();
             if (resp.status === 200) {
                 responseDiv.innerHTML = '<img src="https://cdn.huelet.net/assets/loaders/circles.svg" alt="Loading...">Loading...';
-                localStorage.setItem('_hltoken', data.token);
-                location.assign("/studio/profile")
+                document.cookie = `_hltoken=${data.token}; expires=Fri, 31 Dec 9999 23:59:59 GMT; SameSite=None; Secure`;
+                location.assign("/studio/profile");
             } else if (resp.status === 401) {
                 success = false;
                 responseDiv.innerHTML = '<div class="alert alert-danger" role="alert"><h4 class="alert-heading">You couldn\'t sign in!</h4><p>Your password is incorrect.</p></div>';
