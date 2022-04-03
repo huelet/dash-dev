@@ -34,7 +34,7 @@ app.get("/", (req: express.Request, res: express.Response) => {
     });
     return
   } else if (req.cookies._hltoken) {
-    res.redirect("/dashboard");
+    res.redirect("/studio/profile");
   }
 });
 app.get("/flow/in", (req: express.Request, res: express.Response) => {
@@ -44,7 +44,7 @@ app.get("/flow/in", (req: express.Request, res: express.Response) => {
     });
     return
   } else if (req.cookies._hltoken) {
-    res.redirect("/dashboard");
+    res.redirect("/studio/profile");
   }
 });
 app.get("/upload", (req: express.Request, res: express.Response) => {
