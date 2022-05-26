@@ -32,7 +32,7 @@ app.get("/", (req: express.Request, res: express.Response) => {
     res.render("home", {
       version: versionData.version,
     });
-    return
+    return;
   } else if (req.cookies._hltoken) {
     res.redirect("/studio/profile");
   }
@@ -42,14 +42,12 @@ app.get("/flow/in", (req: express.Request, res: express.Response) => {
     res.render("login", {
       version: versionData.version,
     });
-    return
+    return;
   } else if (req.cookies._hltoken) {
     res.redirect("/studio/profile");
   }
 });
-app.get("/studio/profile", (req: express.Request, res: express.Response) => {
-  
-})
+app.get("/studio/profile", (req: express.Request, res: express.Response) => {});
 app.get("/studio/upload", (req: express.Request, res: express.Response) => {
   if (!req.cookies._hltoken) {
     res.redirect("/");
@@ -58,7 +56,19 @@ app.get("/studio/upload", (req: express.Request, res: express.Response) => {
       version: versionData.version,
     });
   }
-})
+});
+
+app.post("/api/cookie", (req: express.Request, res: express.Response) => {
+  const token = req.body.token;
+  res.cookie("_hltoken", token, {
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+    path: "/",
+    httpOnly: true,
+    sameSite: "strict",
+    secure: true,
+  });
+  res.status(200).send("Cookie set");
+});
 
 app.listen(PORT, () => {
   console.log(

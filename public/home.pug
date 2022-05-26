@@ -2,14 +2,14 @@ doctype html
 html(lang="en")
   head
     meta(charset="UTF-8")
-    meta(http-equiv="X-UA-Compatible", content="IE=edge")
-    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(http-equiv="X-UA-Compatible" content="IE=edge")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
     if isAuthd === true
       title Welcome back!
     else
       title 🌐 Join the Huelet Creator Network!
-    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css")
-    link(rel="shortcut icon", href="https://cdn.huelet.net/assets/hnlogo-ts.ico", type="image/x-icon")
+    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css")
+    link(rel="shortcut icon" href="https://cdn.huelet.net/assets/hnlogo-ts.ico" type="image/x-icon")
     meta(name='title' content='Huelet - The video platform for humans')
     meta(name='description' content='This is the dashboard for creators on Huelet')
     meta(property='og:type' content='website')
@@ -38,10 +38,10 @@ html(lang="en")
     else
       div.login
         h2.center.display-4
-          a(href="/login") Log in
+          a(href="/flow/in") Log in
       div.signup
         h2.center.display-4 Haven't joined yet? Sign up
-          a(href="/signup") here!
+          a(href="/flow/up") here!
         h4.center.display-6 Why Huelet?
         p
           a(href="https://huelet.net/cc/") Read the main page here
