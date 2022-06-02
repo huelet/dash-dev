@@ -1,0 +1,21 @@
+:root {
+    --color-primary: rgb(118, 0, 255);
+    --color-background: rgb(24, 23, 24);
+    --color-text: rgb(255, 255, 255);
+    --color-selection: rgba(172, 100, 255, 0.75);
+}
+
+::selection {
+    background: var(--color-selection);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    background-color: var(--color-background);
+}
