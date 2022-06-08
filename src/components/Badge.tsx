@@ -9,6 +9,7 @@ export interface BadgeProps {
 }
 
 export const Badge = ({ children, chonky, username }: BadgeProps) => {
+  const [loading, setLoading] = React.useState<boolean>(true);
   const [pfp, setPfp] = React.useState<string>("");
   const [bio, setBio] = React.useState<string>("");
   const [location, setLocation] = React.useState<string>("");
@@ -25,11 +26,24 @@ export const Badge = ({ children, chonky, username }: BadgeProps) => {
         .then((data) => {
           setPronouns(data.pronouns);
         });
-      fetch(`https://api.huelet.net/auth/bio?username=${username}`);
-      fetch(`https://api.huelet.net/auth/location?username=${username}`);
+      fetch(`https://api.huelet.net/auth/bio?username=${username}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setBio(data.bio);
+        });
+      fetch(`https://api.huelet.net/auth/location?username=${username}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setLocation(data.location);
+        });
+      setLoading(false);
     }
   };
-  getUserData();
+  if (loading === true) {
+    getUserData();
+  } else {
+    null;
+  }
   return (
     <div
       css={css`
@@ -44,7 +58,11 @@ export const Badge = ({ children, chonky, username }: BadgeProps) => {
         margin: 0.5rem;
       `}
     >
-      <Avatar src={pfp} alt={"hi"} radius={"xl"} size={"lg"} />
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        <Avatar src={pfp} alt={"hi"} radius={"xl"} size={"lg"} />
+      )}
       <div
         css={css`
           display: flex;
@@ -72,7 +90,7 @@ export const Badge = ({ children, chonky, username }: BadgeProps) => {
             font-weight: bold;
           `}
         >
-          {pronouns.join("/")}
+          {loading ? <div>loading</div> : pronouns.join("/")}
         </span>
       </div>
       {children}
