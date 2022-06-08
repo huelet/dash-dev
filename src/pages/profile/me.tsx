@@ -1,6 +1,7 @@
 import * as React from "react";
 import { css, jsx } from "@emotion/react";
-import { MantineProvider } from "@mantine/core";
+import { MantineProvider, AppShell, Tabs, Box, Title } from "@mantine/core";
+import { Avatar, Bell, Video } from "@fdn-ui/icons-react";
 import { useCookies } from "react-cookie";
 import { Badge } from "../../components/Badge";
 
@@ -23,6 +24,27 @@ const ProfilePage = () => {
     <div id="root">
       <MantineProvider theme={{ colorScheme: "dark" }}>
         <Badge chonky={true} username={username} />
+        <AppShell padding="md">
+          <Tabs color={"violet"}>
+            <Tabs.Tab label="Profile" icon={<Avatar fill={"white"} />}>
+              <Box>
+                <Title>Profile</Title>
+                <Box>
+                  
+                </Box>
+
+              </Box>
+            </Tabs.Tab>
+            <Tabs.Tab
+              label="Your Videos"
+              icon={<Video fill={"white"} />}
+            ></Tabs.Tab>
+            <Tabs.Tab
+              label="Your Earnings"
+              icon={<Bell fill={"white"} />}
+            ></Tabs.Tab>
+          </Tabs>
+        </AppShell>
       </MantineProvider>
     </div>
   );
