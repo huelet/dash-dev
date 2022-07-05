@@ -48,3 +48,9 @@ body {
     font-size: 2rem;
     font-family: var(--font-primary);
 }
+
+.text-standard--p {
+    color: var(--color-text);
+    font-size: auto;
+    font-family: var(--font-primary);
+}

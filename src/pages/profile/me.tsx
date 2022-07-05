@@ -6,11 +6,10 @@ import { useCookies } from "react-cookie";
 import { Badge } from "../../components/Badge";
 
 const ProfilePage = () => {
-  const [loading, setLoading] = React.useState<boolean>(true);
   const [cookies, setCookie] = useCookies(["token"]);
   const [username, setUsername] = React.useState<string>("");
-
-  const getToken = () => {
+  const [userdata, setUserdata] = React.useState<any>({});
+  React.useEffect(() => {
     fetch("https://api.huelet.net/auth/token", {
       method: "GET",
       headers: {
@@ -22,22 +21,13 @@ const ProfilePage = () => {
       .then((res) => {
         setUsername(res.username);
       });
-    setLoading(false);
-  };
-  const getUserData = () => {
-    fetch(`https://api.huelet.net/auth/user/${username}`)
+    fetch(`https://api.huelet.net/auth/user?username=${username}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        console.log(data.data);
+        setUserdata(data.data);
       });
-    setLoading(false);
-  };
-  if (loading === true) {
-    getToken();
-    getUserData();
-  } else {
-    null;
-  }
+  }, []);
   return (
     <div id="root">
       <MantineProvider theme={{ colorScheme: "dark" }}>
@@ -48,7 +38,21 @@ const ProfilePage = () => {
               <Box>
                 <Title>Profile</Title>
                 <Box>
-                  <Check fill="white" />
+                  <p className="text-standard--p">
+                    {userdata.pronouns ? (
+                      <p>
+                        Pronouns: {userdata.pronouns.join("/")}
+                        <br />
+                        Verified:{" "}
+                        {userdata.approved ? <Check /> : "Not Verified"}
+                      </p>
+                    ) : (
+                      <p>
+                        Verified:{" "}
+                        {userdata.approved ? <Check /> : "Not Verified"}
+                      </p>
+                    )}
+                  </p>
                 </Box>
               </Box>
             </Tabs.Tab>

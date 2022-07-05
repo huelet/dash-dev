@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { css, jsx } from "@emotion/react";
 import { Avatar } from "@mantine/core";
 
@@ -14,36 +14,38 @@ export const Badge = ({ children, chonky, username }: BadgeProps) => {
   const [bio, setBio] = React.useState<string>("");
   const [location, setLocation] = React.useState<string>("");
   const [pronouns, setPronouns]: any = React.useState([]);
-  const getUserData = () => {
-    if (username) {
-      fetch(`https://api.huelet.net/auth/pfp?username=${username}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setPfp(data.pfp);
-        });
-      fetch(`https://api.huelet.net/auth/pronouns?username=${username}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setPronouns(data.pronouns);
-        });
-      fetch(`https://api.huelet.net/auth/bio?username=${username}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setBio(data.bio);
-        });
-      fetch(`https://api.huelet.net/auth/location?username=${username}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setLocation(data.location);
-        });
-      setLoading(false);
+  React.useEffect(() => {
+    const getUserData = () => {
+      if (username) {
+        fetch(`https://api.huelet.net/auth/pfp?username=${username}`)
+          .then((res) => res.json())
+          .then((data) => {
+            setPfp(data.pfp);
+          });
+        fetch(`https://api.huelet.net/auth/pronouns?username=${username}`)
+          .then((res) => res.json())
+          .then((data) => {
+            setPronouns(data.pronouns);
+          });
+        fetch(`https://api.huelet.net/auth/bio?username=${username}`)
+          .then((res) => res.json())
+          .then((data) => {
+            setBio(data.bio);
+          });
+        fetch(`https://api.huelet.net/auth/location?username=${username}`)
+          .then((res) => res.json())
+          .then((data) => {
+            setLocation(data.location);
+          });
+        setLoading(false);
+      }
+    };
+    if (loading === true) {
+      getUserData();
+    } else {
+      null;
     }
-  };
-  if (loading === true) {
-    getUserData();
-  } else {
-    null;
-  }
+  }, []);
   return (
     <div
       css={css`
