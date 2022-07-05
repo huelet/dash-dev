@@ -24,6 +24,8 @@
 html,
 body {
     background-color: var(--color-background);
+    scroll-behavior: smooth;
+    overflow-x: hidden;
 }
 
 /* Boxes */
@@ -53,4 +55,8 @@ body {
     color: var(--color-text);
     font-size: auto;
     font-family: var(--font-primary);
+}
+/* yes indeed */
+.hidden {
+    display: none;
 }
