@@ -6,8 +6,6 @@ import {
   Box,
   Title,
   Group,
-  InputWrapper,
-  Input,
   TextInput,
   Container,
   Card,
@@ -23,6 +21,7 @@ const UploadPage = () => {
   const [loading, setLoading] = React.useState<boolean>(true);
   const [cookies, setCookie] = useCookies(["token"]);
   const [username, setUsername] = React.useState<string>("");
+  const [userdata, setUserdata] = React.useState<any>({});
   const [video, chooseVideo]: any | any = React.useState(null);
   const [videoName, setVideoName] = React.useState<string>("");
   const [videoDescription, setVideoDescription] = React.useState<string>("");
@@ -33,41 +32,34 @@ const UploadPage = () => {
   const [videoUrl, setVurl]: [
     string | any,
     React.Dispatch<React.SetStateAction<string>>
-  ] = React.useState(
-    ""
-  );
+  ] = React.useState("");
   const [error, setError]: [
     boolean | any,
     React.Dispatch<React.SetStateAction<boolean>>
   ] = React.useState(false);
   React.useEffect(() => {
-    const getToken = () => {
-      fetch("https://api.huelet.net/auth/token", {
-        method: "GET",
+    axios
+      .get(`https://api.huelet.net/auth/token`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${cookies.token}`,
         },
       })
-        .then((res) => res.json())
-        .then((res) => {
-          setUsername(res.username);
+      .then((res: any) => {
+        setUsername(res.data.username);
+      });
+    if (username) {
+      axios
+        .get(`https://api.huelet.net/auth/user`, {
+          params: {
+            username: username,
+          },
+        })
+        .then((res: any) => {
+          setUserdata(res.data.data);
         });
-      setLoading(false);
-    };
-    const getUserData = () => {
-      fetch(`https://api.huelet.net/auth/user?username=${username}`)
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-        });
-      setLoading(false);
-    };
-    if (loading === true) {
-      getToken();
-      getUserData();
     } else {
-      null;
+      setUserdata({});
     }
   }, []);
   const percentage = (partialValue: number, totalValue: number) => {
@@ -109,6 +101,8 @@ const UploadPage = () => {
           vurl: videoUrl,
           title: videoName,
           description: videoDescription,
+          private: false,
+          authorId: userdata.uid,
         },
       });
       console.log(resp);
@@ -124,6 +118,7 @@ const UploadPage = () => {
         <AppShell padding="md">
           <Box className={videoUploaded ? "hidden" : ""}>
             <Title>Upload</Title>
+            <p className="text-standard--p">Uploading as {username}</p>
             <input
               type="file"
               name="file"
@@ -247,7 +242,12 @@ const UploadPage = () => {
                     align-items: end;
                   `}
                 >
-                  <Button variant="outline" color="violet" size="lg" onClick={videoDeploy}>
+                  <Button
+                    variant="outline"
+                    color="violet"
+                    size="lg"
+                    onClick={videoDeploy}
+                  >
                     Deploy
                   </Button>
                 </div>

@@ -1,8 +1,8 @@
 import * as React from "react";
-import { css, jsx } from "@emotion/react";
 import { MantineProvider, AppShell, Tabs, Box, Title } from "@mantine/core";
-import { Avatar, Bell, Check, Video } from "@fdn-ui/icons-react";
+import { Avatar, Bell, Check, Close, Video } from "@fdn-ui/icons-react";
 import { useCookies } from "react-cookie";
+import axios from "axios";
 import { Badge } from "../../components/Badge";
 
 const ProfilePage = () => {
@@ -10,23 +10,29 @@ const ProfilePage = () => {
   const [username, setUsername] = React.useState<string>("");
   const [userdata, setUserdata] = React.useState<any>({});
   React.useEffect(() => {
-    fetch("https://api.huelet.net/auth/token", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${cookies.token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        setUsername(res.username);
+    axios
+      .get(`https://api.huelet.net/auth/token`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${cookies.token}`,
+        },
+      })
+      .then((res: any) => {
+        setUsername(res.data.username);
       });
-    fetch(`https://api.huelet.net/auth/user?username=${username}`)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data.data);
-        setUserdata(data.data);
-      });
+      if (username) {
+        axios
+          .get(`https://api.huelet.net/auth/user`, {
+            params: {
+              username: username,
+            }
+          })
+          .then((res: any) => {
+            setUserdata(res.data.data);
+          });
+      } else {
+        setUserdata({});
+      }
   }, []);
   return (
     <div id="root">
@@ -36,7 +42,7 @@ const ProfilePage = () => {
           <Tabs color={"violet"}>
             <Tabs.Tab label="Profile" icon={<Avatar fill={"white"} />}>
               <Box>
-                <Title>Profile</Title>
+                <Title>{username}</Title>
                 <Box>
                   <p className="text-standard--p">
                     {userdata.pronouns ? (
@@ -44,12 +50,12 @@ const ProfilePage = () => {
                         Pronouns: {userdata.pronouns.join("/")}
                         <br />
                         Verified:{" "}
-                        {userdata.approved ? <Check /> : "Not Verified"}
+                        {userdata.approved ? <Check fill={"green"} /> : <Close fill={"red"} />}
                       </p>
                     ) : (
                       <p>
                         Verified:{" "}
-                        {userdata.approved ? <Check /> : "Not Verified"}
+                        {userdata.approved ? <Check fill={"green"} /> : <Close fill={"red"} />}
                       </p>
                     )}
                   </p>

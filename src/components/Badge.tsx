@@ -38,6 +38,8 @@ export const Badge = ({ children, chonky, username }: BadgeProps) => {
             setLocation(data.location);
           });
         setLoading(false);
+      } else {
+        setLoading(false);
       }
     };
     if (loading === true) {
