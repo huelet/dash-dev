@@ -23,20 +23,13 @@ const UploadPage = () => {
   const [username, setUsername] = React.useState<string>("");
   const [userdata, setUserdata] = React.useState<any>({});
   const [video, chooseVideo]: any | any = React.useState(null);
-  const [videoName, setVideoName] = React.useState<string>("");
+  const [videoName, setVideoName] = React.useState<string>("mikpin");
   const [videoDescription, setVideoDescription] = React.useState<string>("");
-  const [videoUploaded, toggleVideoUploaded]: [
-    boolean | any,
-    React.Dispatch<React.SetStateAction<boolean>>
-  ] = React.useState(false);
-  const [videoUrl, setVurl]: [
-    string | any,
-    React.Dispatch<React.SetStateAction<string>>
-  ] = React.useState("");
-  const [error, setError]: [
-    boolean | any,
-    React.Dispatch<React.SetStateAction<boolean>>
-  ] = React.useState(false);
+  const [videoUploaded, toggleVideoUploaded] = React.useState<boolean>(false);
+  const [videoUrl, setVurl] = React.useState<string>("");
+  const [error, setError] = React.useState<boolean>(false);
+  const [videoPosted, setVideoPosted] = React.useState<boolean>(false);
+  const [videoId, setVideoId] = React.useState<string>("");
   React.useEffect(() => {
     axios
       .get(`https://api.huelet.net/auth/token`, {
@@ -105,6 +98,8 @@ const UploadPage = () => {
           authorId: userdata.uid,
         },
       });
+      setVideoPosted(true);
+      setVideoId(resp.data.vuid);
       console.log(resp);
     } catch (error) {
       console.error(error);
@@ -116,7 +111,11 @@ const UploadPage = () => {
       <MantineProvider theme={{ colorScheme: "dark" }}>
         <Badge chonky={true} username={username} />
         <AppShell padding="md">
-          <Box className={videoUploaded ? "hidden" : ""}>
+          <Box
+            className={
+              videoUploaded ? "hidden" : "" || videoPosted ? "hidden" : ""
+            }
+          >
             <Title>Upload</Title>
             <p className="text-standard--p">Uploading as {username}</p>
             <input
@@ -159,7 +158,11 @@ const UploadPage = () => {
               </div>
             </Group>
           </Box>
-          <Box className={videoUploaded ? "" : "hidden"}>
+          <Box
+            className={
+              videoUploaded ? "" : "hidden" || videoPosted ? "hidden" : ""
+            }
+          >
             <Group>
               <Container>
                 <div
@@ -268,6 +271,53 @@ const UploadPage = () => {
                 </Card>
               </Container>
             </Group>
+          </Box>
+          <Box
+            className={videoPosted ? "" : "hidden"}
+            css={css`
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+            `}
+          >
+            <h1 className="text-big--h1">Video Posted!</h1>
+            <div
+              css={css`
+                display: flex;
+                flex-direction: column;
+                border: 1px solid rgb(47, 51, 54);
+                border-radius: 16px;
+                width: 16.5em;
+                height: 17em;
+              `}
+            >
+                <div
+                  css={css`
+                    width: 100%;
+                    height: 50%;
+                    background-size: cover;
+                    background-position: 50%;
+                    background-repeat: no-repeat;
+                    border-radius: 1.5em;
+                    background-image: url("https://cdn.huelet.net/assets/Poster.png");
+                  `}
+                ></div>
+                <h2 className="text-big--h2">{videoName}</h2>
+                <p className="text-standard--p">By {username}</p>
+            </div>
+            <div
+              css={css`
+                display: flex;
+                flex-direction: row;
+                justify-content: around;
+                `}>
+                  <div css={css`
+                    background: #525252;
+                  `}>
+                    
+                  </div>
+                </div>
           </Box>
         </AppShell>
       </MantineProvider>
