@@ -19,7 +19,7 @@ const config: GatsbyConfig = {
     {
       resolve: "gatsby-plugin-manifest",
       options: {
-        icon: "https://cdn.hulet.net/assets/logo.png",
+        icon: "./src/images/logo.png",
       },
     },
     "gatsby-plugin-sharp",
