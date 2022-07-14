@@ -17,6 +17,8 @@ import { jsx, css } from "@emotion/react";
 import { useCookies } from "react-cookie";
 import { Badge } from "../../components/Badge";
 
+const isBrowser = typeof window !== "undefined";
+
 const UploadPage = () => {
   const [loading, setLoading] = React.useState<boolean>(true);
   const [cookies, setCookie] = useCookies(["token"]);
@@ -265,8 +267,8 @@ const UploadPage = () => {
                     autoPlay={true}
                     controls={false}
                     loop={true}
-                    width={`${window.innerWidth * 0.4}px`}
-                    height={`${window.innerHeight * 0.4}px`}
+                    width={`${isBrowser ? window.innerWidth * 0.4 : 15}px`}
+                    height={`${isBrowser ? window.innerWidth * 0.4 : 15}px`}
                   ></video>
                 </Card>
               </Container>
