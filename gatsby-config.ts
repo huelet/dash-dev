@@ -3,7 +3,7 @@ import type { GatsbyConfig } from "gatsby";
 const config: GatsbyConfig = {
   siteMetadata: {
     title: `Huelet Dash`,
-    siteUrl: `https://www.yourdomain.tld`,
+    siteUrl: `https://dash.huelet.net`,
   },
   // More easily incorporate content into your pages through automatic TypeScript type generation and better GraphQL IntelliSense.
   // If you use VSCode you can also use the GraphQL plugin
@@ -19,7 +19,7 @@ const config: GatsbyConfig = {
     {
       resolve: "gatsby-plugin-manifest",
       options: {
-        icon: "src/images/icon.png",
+        icon: "https://cdn.hulet.net/assets/logo.png",
       },
     },
     "gatsby-plugin-sharp",

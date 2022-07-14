@@ -23,7 +23,7 @@ const UploadPage = () => {
   const [username, setUsername] = React.useState<string>("");
   const [userdata, setUserdata] = React.useState<any>({});
   const [video, chooseVideo]: any | any = React.useState(null);
-  const [videoName, setVideoName] = React.useState<string>("mikpin");
+  const [videoName, setVideoName] = React.useState<string>("");
   const [videoDescription, setVideoDescription] = React.useState<string>("");
   const [videoUploaded, toggleVideoUploaded] = React.useState<boolean>(false);
   const [videoUrl, setVurl] = React.useState<string>("");
@@ -275,7 +275,7 @@ const UploadPage = () => {
           <Box
             className={videoPosted ? "" : "hidden"}
             css={css`
-              display: flex;
+              display: ${videoPosted ? "flex" : "none"};
               flex-direction: column;
               justify-content: center;
               align-items: center;
