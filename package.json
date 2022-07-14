@@ -26,6 +26,7 @@
     "@mantine/modals": "^4.2.7",
     "@mantine/rte": "^4.2.7",
     "@mantine/spotlight": "^4.2.7",
+    "@mantine/ssr": "^4.2.12",
     "dayjs": "^1.11.2",
     "gatsby": "^4.15.2",
     "gatsby-plugin-emotion": "^7.15.0",
