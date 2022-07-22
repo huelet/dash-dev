@@ -111,7 +111,6 @@ const UploadPage = () => {
   return (
     <div id="root">
       <MantineProvider theme={{ colorScheme: "dark" }}>
-        <Badge chonky={true} username={username} />
         <AppShell padding="md">
           <Box
             className={
@@ -294,32 +293,33 @@ const UploadPage = () => {
                 height: 17em;
               `}
             >
-                <div
-                  css={css`
-                    width: 100%;
-                    height: 50%;
-                    background-size: cover;
-                    background-position: 50%;
-                    background-repeat: no-repeat;
-                    border-radius: 1.5em;
-                    background-image: url("https://cdn.huelet.net/assets/Poster.png");
-                  `}
-                ></div>
-                <h2 className="text-big--h2">{videoName}</h2>
-                <p className="text-standard--p">By {username}</p>
+              <div
+                css={css`
+                  width: 100%;
+                  height: 50%;
+                  background-size: cover;
+                  background-position: 50%;
+                  background-repeat: no-repeat;
+                  border-radius: 1.5em;
+                  background-image: url("https://cdn.huelet.net/assets/Poster.png");
+                `}
+              ></div>
+              <h2 className="text-big--h2">{videoName}</h2>
+              <p className="text-standard--p">By {username}</p>
             </div>
             <div
               css={css`
                 display: flex;
                 flex-direction: row;
                 justify-content: around;
-                `}>
-                  <div css={css`
-                    background: #525252;
-                  `}>
-                    
-                  </div>
-                </div>
+              `}
+            >
+              <div
+                css={css`
+                  background: #525252;
+                `}
+              ></div>
+            </div>
           </Box>
         </AppShell>
       </MantineProvider>
