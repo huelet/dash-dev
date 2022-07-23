@@ -85,6 +85,8 @@ const ProfilePage = () => {
                 <StaticImage
                   src="https://cdn.huelet.net/assets/logo.png"
                   alt="Huelet logo"
+                  placeholder="blurred"
+                  layout="fixed"
                   width={256}
                   height={256}
                 />
