@@ -112,6 +112,7 @@ const UploadPage = () => {
       });
       setVideoPosted(true);
       setVideoId(resp.data.vuid);
+      window.location.href = `/studio/upload-complete?vuid=${resp.data.vuid}`;
       console.log(resp);
     } catch (error) {
       console.error(error);
