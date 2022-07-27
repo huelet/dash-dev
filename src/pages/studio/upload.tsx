@@ -29,8 +29,7 @@ const UploadPage = () => {
   const [videoDescription, setVideoDescription] = React.useState<string>("");
   const [videoUploaded, toggleVideoUploaded] = React.useState<any>(null);
   const [videoUrl, setVurl] = React.useState<string>("");
-  const [links, setLinks] = React.useState<any[]>([]);
-  const [linkError, setLinkError] = React.useState<string>("");
+  const [video, setVideo] = React.useState<any>(null);
   const [error, setError] = React.useState<boolean>(false);
   const [videoPosted, setVideoPosted] = React.useState<boolean>(false);
   const [videoId, setVideoId] = React.useState<string>("");
@@ -73,42 +72,25 @@ const UploadPage = () => {
   };
   const handleVideoSelectionChange = async (event: any) => {
     event.preventDefault();
-    toggleVideoUploaded(false);
-    const video = event.target.files[0];
-    const formData = new FormData();
-    formData.append("file", video);
-    try {
-      const resp = await axios({
-        url: "https://api.huelet.net/videos/upload/item",
-        method: "post",
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        data: formData,
-      });
-      setVurl(resp.data.vurl);
-      toggleVideoUploaded(true);
-    } catch (error) {
-      console.error(error);
-      setError(true);
-    }
+    setVideo(event.target.files[0]);
   };
   const videoDeploy = async () => {
     try {
+      const formData = new FormData();
+      formData.append("video", video);
+      formData.append("title", videoName);
+      formData.append("description", videoDescription);
+      formData.append("username", username);
+      formData.append("userdata", userdata?.uid);
+      formData.append("private", "false");
       const resp = await axios({
-        url: "https://api.huelet.net/videos/deploy/item",
+        url: "https://api.huelet.net/videos/deploy",
         method: "post",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${cookies.token}`,
         },
-        data: {
-          vurl: videoUrl,
-          title: videoName,
-          description: videoDescription,
-          private: false,
-          authorId: userdata.uid,
-        },
+        data: formData,
       });
       setVideoPosted(true);
       setVideoId(resp.data.vuid);
